@@ -10,7 +10,7 @@ bot.remove_command('help')
 lastdel = {}
 lastedit = {}
 lastmsg = {}
-TOKEN = os.getenv("DISCORD_TOKEN")
+TOKEN = open("token.txt", "r").read()
 ########################################################################################################################
 @bot.event
 async def on_ready():
