@@ -5,12 +5,14 @@ import discord
 from discord.ext import commands
 from datetime import datetime
 import os
+from dotenv import load_dotenv
+load_dotenv()
 bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 bot.remove_command('help')
 lastdel = {}
 lastedit = {}
 lastmsg = {}
-TOKEN = open("token.txt", "r").read()
+TOKEN = os.getenv("DISCORD_TOKEN")
 ########################################################################################################################
 @bot.event
 async def on_ready():
@@ -69,8 +71,11 @@ async def night(ctx, count=None):
 
 @bot.command()
 async def ching(ctx):
-    await ctx.send("<@490176293372166148> nerd")
-
+    num = random.randrange(10)
+    if num > 1:
+        await ctx.send("<@490176293372166148> nerd")
+    else:
+        await ctx.send("<@490176293372166148> bu")
 @bot.command()
 async def jess(ctx):
     await ctx.send("<@341981835124801547> idiot")
