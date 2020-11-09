@@ -1,2 +1,2 @@
 worker: python bot/bot.py
-web: gunicorn discordbot.wsgi
+web: gunicorn discord.wsgi
