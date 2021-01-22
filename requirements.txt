@@ -1,5 +1,2 @@
 discord.py
-flask
-PyNaCl
-dnspython
-gunicorn
+
