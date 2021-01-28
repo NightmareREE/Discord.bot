@@ -178,10 +178,6 @@ async def choose(ctx, *args):
         await ctx.send("Invalid Argument")
 ########################################################################################################################
 
-def threshold(n):
-    level_threshold = 5 * (n ** 2) + 50 * n + 100
-    return level_threshold
-
 
 @bot.event
 async def on_message(message):
@@ -202,13 +198,6 @@ async def on_message(message):
         if bad_word in message.content:
             await message.delete()
             await message.author.send("No bad words please.")
-    emotes = ['🧀', '😂']
-    for emote in emotes:
-        if emote in message.content:
-            await message.delete()
-            await message.author.send("No bad emotes please.")
-
-
     await bot.process_commands(message)
 
 ########################################################################################################################
@@ -221,7 +210,6 @@ async def help(ctx):
     out.add_field(name = "!replay", value = "Sends the last deleted message.", inline = False)
     out.add_field(name = "!unedit", value = "Displays the last edited message as before it was edited.", inline = False)
     out.add_field(name = "!poll question: choice1 choice2...", value = "Posts a poll with given choices.", inline = False)
-    out.add_field(name = "!times", value = "Displays the current time in different timezones.", inline = False)
     out.add_field(name = "!choose option1 option2 ...", value = "Randomly chooses one of the given options.", inline = False)
     await ctx.send(embed = out)
 
