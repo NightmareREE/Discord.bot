@@ -148,8 +148,8 @@ async def divs(ctx, *args):
         div1 = names[:len(names)//2]
         div2 = names[len(names)//2:]
         out = discord.Embed()
-        out.add_field(name = "Division 1", value = div1)
-        out.add_field(name = "Division 2", value = div2)
+        out.add_field(name = "Division 1", value = f"{(', '+chr(10)).join(div1)}")
+        out.add_field(name = "Division 2", value = f"{(', '+chr(10)).join(div2)}")
         await ctx.send(embed = out)
     except:
         await ctx.send("Invalid Argument")
