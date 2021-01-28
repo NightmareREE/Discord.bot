@@ -135,33 +135,11 @@ async def poll(ctx, *args):
         await ctx.send(ve)
 #######################################################################################################################
 
-
-
-@bot.command(pass_context=True)
-async def dva(ctx):
-    f = open("dva.txt", "r")
-    dva_images = f.read().splitlines()
-    image = random.choice(dva_images)
-    out = discord.Embed(color = 0xff0000)
-    out.set_image(url=image)
-    await ctx.send(embed = out)
-
-    
 ########################################################################################################################
-
-x = open("pokemon.txt", "r")
-pokemon = x.read().splitlines()
-@bot.command()
-async def team(ctx):
-    out = discord.Embed(color = 0xff0000)
-    teams = random.sample(pokemon, k=6)
-    lst = [x.capitalize() for x in teams]
-    out.add_field(name=f"{ctx.message.author.name}'s Pokemon:", value=f"{(' ' + chr(10)).join(lst)}")
-    await ctx.send(embed=out)
 
 ########################################################################################################################
 @bot.command()
-async def choice(ctx, *args):
+async def choose(ctx, *args):
     try:
         choices = random.choice(args)
         choices = choices.upper()
@@ -213,7 +191,7 @@ async def help(ctx):
     out.add_field(name = "!unedit", value = "Displays the last edited message as before it was edited.", inline = False)
     out.add_field(name = "!poll question: choice1 choice2...", value = "Posts a poll with given choices.", inline = False)
     out.add_field(name = "!times", value = "Displays the current time in different timezones.", inline = False)
-    out.add_field(name = "!choice option1 option2 ...", value = "Randomly chooses one of the given options.", inline = False)
+    out.add_field(name = "!choose option1 option2 ...", value = "Randomly chooses one of the given options.", inline = False)
     await ctx.send(embed = out)
 
 
