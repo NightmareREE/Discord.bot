@@ -4,7 +4,6 @@ import discord
 from discord.ext import commands
 from datetime import datetime
 import os
-from dotenv import load_dotenv
 import re
 
 
