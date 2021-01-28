@@ -145,12 +145,12 @@ async def divs(ctx, *args):
         random.shuffle(names)
         div1 = []
         div2 = []
-        length = names.count()
-        half = length / 2
-        for x in range(0,half):
-            div1 = div1.append(names[x])
-        for y in range(half,length):
-            div2 = div2.append(names[y])
+        div1 = names[:len(names)//2]
+        div2 = names[len(names)//2:]
+        out = discord.Embed()
+        out.add_field(name = "Division 1", value = div1)
+        out.add_field(name = "Division 2", value = div2)
+        await ctx.send(embed = out)
     except:
         await ctx.send("Invalid Argument")
 ########################################################################################################################
