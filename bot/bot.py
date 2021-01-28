@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 import re
 
 
-load_dotenv()
 bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 bot.remove_command('help')
 lastdel = {}
