@@ -198,7 +198,7 @@ async def on_message(message):
         "nigga",
         "nigger",
         "faggot" ]
-     for bad_word in bad_words:
+    for bad_word in bad_words:
         if bad_word in message.content:
             await message.delete()
             await message.author.send("No bad words please.")
