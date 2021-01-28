@@ -134,7 +134,25 @@ async def poll(ctx, *args):
     except ValueError as ve:
         await ctx.send(ve)
 #######################################################################################################################
-
+@bot.command()
+async def divs(ctx, *args):
+    try:
+        if not args:
+            raise ValueError("You haven't given any names idiot!")
+        names = []
+        for arg in args:
+            names.append(arg)
+        random.shuffle(names)
+        div1 = []
+        div2 = []
+        length = names.count()
+        half = length / 2
+        for x in range(0,half):
+            div1 = div1.append(names[x])
+        for y in range(half,length):
+            div2 = div2.append(names[y])
+    except:
+        await ctx.send("Invalid Argument")
 ########################################################################################################################
 @bot.command(pass_context=True)          
 async def dva(ctx):                                
