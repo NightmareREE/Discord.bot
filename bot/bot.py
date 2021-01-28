@@ -6,7 +6,7 @@ from datetime import datetime
 import os
 from dotenv import load_dotenv
 import re
-import sqlite3
+
 
 load_dotenv()
 bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
@@ -24,12 +24,7 @@ async def on_ready():
         print(member)
     await bot.change_presence(activity=discord.Game(name='Overwatch'))
     ##
-    db = sqlite3.connect("C://Users//david//PycharmProjects//NightmareBot//data//users.db")
-    c = db.cursor()
-    c.execute(
-        'CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, name TEXT, level INT, exp INTEGER, rawexp INTEGER, time REAL)')
-    db.commit()
-
+    
 ########################################################################################################################
 
 @bot.event
@@ -183,35 +178,6 @@ def threshold(n):
     return level_threshold
 
 
-@bot.command(pass_context=True)
-async def rank(ctx):
-    try:
-        _, member = (ctx.message.content).split(' ', 1)
-        member = re.sub("[^0-9]", "", member)
-    except:
-        member = ctx.message.author.id
-
-    db = sqlite3.connect("C://Users//david//PycharmProjects//NightmareBot//data//users.db")
-    c = db.cursor()
-
-    c.execute(
-        'SELECT user.*, (SELECT count(*) FROM users AS members WHERE members.rawexp > user.rawexp) as Rank FROM users AS user WHERE id = ?',
-        (ctx.message.author.id,))
-
-    user = c.fetchone()
-    db.close()
-
-    rank = str(user[6] + 1)
-
-    out = discord.Embed(title='{}\'s Information'.format(ctx.message.author.name), color=0xff0000)
-    out.set_thumbnail(url=ctx.message.author.avatar_url)
-    out.add_field(name='Rank', value='#' + rank)
-    out.add_field(name='Level', value=user[2])
-    out.add_field(name='EXP', value='{}/{}'.format(user[3], threshold(user[2])))
-    out.add_field(name='Total EXP', value=user[4])
-    await ctx.send(embed=out)
-
-
 @bot.event
 async def on_message(message):
     if message.author == bot.user:
@@ -235,36 +201,6 @@ async def on_message(message):
             await message.delete()
             await message.author.send("No bad emotes please.")
 
-    db = sqlite3.connect("C://Users//david//PycharmProjects//NightmareBot//data//users.db")
-    c = db.cursor()
-
-    c.execute('SELECT * FROM users WHERE id= ?', (message.author.id,))
-    user = c.fetchone()
-
-    if user is None:
-        c.execute('INSERT INTO users(id, name, level, exp, rawexp, time) VALUES(?,?,?,?,?,?)',
-                  (message.author.id, message.author.name, 1, 0, 0, time.time()))
-        db.commit()
-        db.close()
-        return
-
-    if message.author.name != user[1]:
-        c.execute('UPDATE users SET name = ? WHERE id= ?', (message.author.name, message.author.id))
-
-    if (time.time() - user[5]) > 60:
-        addedexp = random.randint(10, 25)
-        exp = user[3] + addedexp
-        rawexp = user[4] + addedexp
-        c.execute('UPDATE users SET exp = ?, rawexp = ?, name = ?, time = ? WHERE id= ?',
-                  (exp, rawexp, message.author.name, time.time(), message.author.id))
-
-        if (exp > threshold(user[2])):
-            level = user[2] + 1
-            c.execute('UPDATE users SET exp = ?, level = ? WHERE id= ?', (0, level, message.author.id))
-            await message.channel.send(f"{message.author.mention} Pog! You leveled up! You're now level {level}")
-            #** {} **.'.format(level)
-    db.commit()
-    db.close()
 
     await bot.process_commands(message)
 
@@ -280,7 +216,6 @@ async def help(ctx):
     out.add_field(name = "!poll question: choice1 choice2...", value = "Posts a poll with given choices.", inline = False)
     out.add_field(name = "!times", value = "Displays the current time in different timezones.", inline = False)
     out.add_field(name = "!choice option1 option2 ...", value = "Randomly chooses one of the given options.", inline = False)
-    out.add_field(name = "!rank", value="Checks your rank in the server", inline=False)
     await ctx.send(embed = out)
 
 
