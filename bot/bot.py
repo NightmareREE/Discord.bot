@@ -136,7 +136,36 @@ async def poll(ctx, *args):
 #######################################################################################################################
 
 ########################################################################################################################
-
+@bot.command(pass_context=True)          
+async def dva(ctx):                                
+    dva_images = [ 
+"https://pbs.twimg.com/media/EmO79IeUYAAXqwf?format=jpg&name=large"
+"https://i.imgur.com/wByUmlJ.jpg"
+"https://i.imgur.com/7uJEvOh.jpg"
+"https://i.imgur.com/Ql28ayO.jpg"
+"https://i.imgur.com/UOSlAi4.jpg"
+"https://i.imgur.com/LqiicDV.jpg"
+"https://i.imgur.com/Bt8AKUC.jpg"
+"https://i.imgur.com/9iBnnnv.jpg"
+"https://i.imgur.com/VhPUemL.jpg"
+"https://i.imgur.com/rPIYbHl.jpg"
+"https://i.imgur.com/eJxhZy8.jpg"
+"https://i.pinimg.com/originals/6d/cf/1b/6dcf1b21a9ba92982cade1e660b610d0.gif"
+"https://media2.giphy.com/media/YknaabgtG0nCOlfpEI/giphy.gif?cid=ecf05e47nhmt45cqd2hns4dt6xyiu5cdyeu0pfs2goguygbz&rid=giphy.gif"
+"https://media2.giphy.com/media/26gJAq9QKcrbxQoV2/giphy.gif?cid=ecf05e478vun5imnqamkcq2sphrm9a7yt5tsxj7rwyr14zsc&rid=giphy.gif"
+"https://64.media.tumblr.com/e1151d39ab20fb6b2c91a4820d668e20/tumblr_pdv2rbXDTo1w9q1uyo2_500.gif"
+"https://64.media.tumblr.com/e23339a77c1da2a986ed59a72235db0c/tumblr_pdv2rbXDTo1w9q1uyo4_1280.gif"
+"https://images-ext-2.discordapp.net/external/86dE7B2sc39XHTW7vl9VOnVSkdUwMFjq9-HFW_sNCq0/https/danbooru.donmai.us/data/sample/__d_va_and_cruiser_d_va_overwatch_drawn_by_byam__sample-ffe621a063161dc9dabb5fe50c5e0214.jpg"
+"https://images-ext-2.discordapp.net/external/YQ9qNOp6QFuT-lJXdbVgfaXOg4UVP7c09ZVNkoSGMJ4/https/danbooru.donmai.us/data/sample/__d_va_overwatch_drawn_by_maro_lij512__sample-73ae24572a4b1e0e7cb0382ca766e28c.jpg"
+"https://images-ext-1.discordapp.net/external/uQVJSfZjhlSqAdFJhYZ5yuyfZsYMYA-Hc1Yj_18017M/https/danbooru.donmai.us/data/sample/__d_va_overwatch_drawn_by_maro_lij512__sample-73cbe796f073d761658f0a2ab4dddb41.jpg"
+"https://images-ext-2.discordapp.net/external/vyZR1eNHJkbsZ0mJyaY2nNSka2RIlk8qmxmkmQEdAV4/https/danbooru.donmai.us/data/sample/__d_va_overwatch_drawn_by_16nfeiyu__sample-294badd6af298e5e8c9147207df72ae0.jpg"
+"https://images-ext-1.discordapp.net/external/nrsfjEbMpSsW9lbToxHZNOOJKIju-L8d_lkmvYH5HZ0/https/danbooru.donmai.us/data/sample/__d_va_and_academy_d_va_overwatch_drawn_by_eito_nishikawa__sample-50f21a7342974b7e2e6fe414e681ba1c.jpg"
+"https://images-ext-1.discordapp.net/external/BENNcDCidthrMe8PMyfoFAWc8dSrhYtlf9QhD_wQ-QU/https/cdn.donmai.us/sample/b4/84/__d_va_overwatch_drawn_by_ku_luo_mofa_shi__sample-b4849ec8088b46ba462bae9423bd0685.jpg"
+"https://i.imgur.com/yTXLObH.jpg" ]
+    image = random.choice(dva_images)    
+    out = discord.Embed(color = 0xff0000)
+    out.set_image(url=image)             
+    await ctx.send(embed = out)          
 ########################################################################################################################
 @bot.command()
 async def choose(ctx, *args):
