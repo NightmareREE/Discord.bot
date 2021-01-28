@@ -155,7 +155,7 @@ async def divs(ctx, *args):
         await ctx.send("Invalid Argument")
 ########################################################################################################################
 @bot.command(pass_context=True)
-async def donowall(ctx)
+async def donowall(ctx):
     image = 'https://media1.tenor.com/images/90421f6bc6e6aa99f33da41afde90925/tenor.gif'
     out = discord.Embed(color = 0xff0000)
     out.set_image(url=image)
