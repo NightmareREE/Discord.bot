@@ -6,7 +6,7 @@ from datetime import datetime
 import os
 import re
 
-bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
+bot = commands.Bot(command_prefix="$", intents=discord.Intents.all())
 bot.remove_command('help')
 lastdel = {}
 lastedit = {}
@@ -74,13 +74,18 @@ async def night(ctx, count=None):
 @bot.command()
 async def ching(ctx):
     num = random.randrange(10)
-    if num > 1:
+    if num > 2:
         await ctx.send("<@490176293372166148> nerd")
     else:
         await ctx.send("<@490176293372166148> bu")
 @bot.command()
 async def jess(ctx):
     await ctx.send("<@341981835124801547> idiot")
+                       
+
+@bot.command()
+async def yoshi(ctx)
+    await ctx.send("<@277268838205358081> cuck")
 ########################################################################################################################
 
 @bot.command()
