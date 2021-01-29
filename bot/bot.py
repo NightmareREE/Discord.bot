@@ -114,9 +114,9 @@ async def highlow(ctx):
         guess = random.randrange(1, 101)
         out = discord.Embed(title="The number rolled is " + str(guess), color=0xff0000)
         if (guess > num):
-            out.add_field(name="You guessed correctly!", value="<:Pog:773720310422831146>", inline = True)
+            out.add_field(name="You guessed correctly! <:EZ:788447395805265990>", value='\u200b', inline = True)
         elif (guess < num):
-            out.add_field(name="You guessed wrong...Unlucky", value="<:NotLikeThis:791431758024802336>", inline=True)
+            out.add_field(name="You guessed wrong...Unlucky <:NotLikeThis:791431758024802336>", value='\u200b', inline=True)
         elif (guess == num):
             out.add_field(name="We rolled the same number!", value='\u200b')
         await ctx.send(embed=out)
@@ -126,9 +126,9 @@ async def highlow(ctx):
         guess = random.randrange(1, 101)
         out = discord.Embed(title="The number rolled is " + str(guess), color=0xff0000)
         if (guess < num):
-            out.add_field(name="You guessed correctly!", value="<:Pog:773720310422831146>", inline=True)
+            out.add_field(name="You guessed correctly! <:EZ:788447395805265990>", value='\u200b', inline=True)
         elif (guess > num):
-            out.add_field(name="You guessed wrong...Unlucky", value="<:NotLikeThis:791431758024802336>", inline=True)
+            out.add_field(name="You guessed wrong...Unlucky <:NotLikeThis:791431758024802336>", value='\u200b', inline=True)
         elif (guess == num):
             out.add_field(name="We rolled the same number! Pog!", value='\u200b')
         await ctx.send(embed=out)
