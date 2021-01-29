@@ -127,7 +127,7 @@ async def highlow(ctx):
                 if (message.content.lower() == "lower"):
                     out.add_field(name="You guessed correctly!", value='\u200b', inLine=True)
                 elif (message.content.lower() == "higher"):
-                    out.add_field(name="You guessed wrong...Unlucky", value='\u200b', inLine=True)
+                    out.add_field(name="You guessed wrong...Unlucky", value='\u200b')
             elif(guess == num):
                 out.add_field(name="We rolled the same number! Pog!", value='\u200b', inLine=True)
         else:
