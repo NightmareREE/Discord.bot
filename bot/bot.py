@@ -237,7 +237,7 @@ async def help(ctx):
     out.add_field(name = "s!unedit", value = "Displays the last edited message as before it was edited.", inline = False)
     out.add_field(name = "s!poll question: choice1 choice2...", value = "Posts a poll with given choices.", inline = False)
     out.add_field(name = "s!choose option1 option2 ...", value = "Randomly chooses one of the given options.", inline = False)
-    out.add_field(name = "s!highlow:, value = "Play a game of higher or lower.", inline = False)
+    out.add_field(name="s!highlow", value="Play a game of higher or lower.", inline=False)
     await ctx.send(embed = out)
 
 
