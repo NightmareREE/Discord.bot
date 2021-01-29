@@ -5,7 +5,7 @@ from discord.ext import commands
 from datetime import datetime
 import os
 import re
-
+import psycopg2
 bot = commands.Bot(command_prefix="s!", intents=discord.Intents.all())
 bot.remove_command('help')
 lastdel = {}
