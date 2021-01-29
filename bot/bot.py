@@ -112,7 +112,7 @@ async def highlow(ctx):
     await ctx.send(embed=embed)
     guess = random.randrange(1,101)
     out = discord.Embed(title="The number rolled is " + str(guess), color=0xff0000)
-    while(yep)
+    while(yep):
         @bot.event
         async def on_message(message):
             if (message.author.id == user):
