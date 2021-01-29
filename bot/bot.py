@@ -114,9 +114,9 @@ async def highlow(ctx):
         guess = random.randrange(1, 101)
         out = discord.Embed(title="The number rolled is " + str(guess), color=0xff0000)
         if (guess > num):
-            out.add_field(name="You guessed correctly!", value="<:Pog:773720310422831146>")
+            out.add_field(name="You guessed correctly!", value="<:Pog:773720310422831146>", inline = True)
         elif (guess < num):
-            out.add_field(name="You guessed wrong...Unlucky", value="<:NotLikeThis:791431758024802336>")
+            out.add_field(name="You guessed wrong...Unlucky", value="<:NotLikeThis:791431758024802336>", inline=True)
         elif (guess == num):
             out.add_field(name="We rolled the same number!", value='\u200b')
         await ctx.send(embed=out)
@@ -126,9 +126,9 @@ async def highlow(ctx):
         guess = random.randrange(1, 101)
         out = discord.Embed(title="The number rolled is " + str(guess), color=0xff0000)
         if (guess < num):
-            out.add_field(name="You guessed correctly!", value="<:Pog:773720310422831146>")
+            out.add_field(name="You guessed correctly!", value="<:Pog:773720310422831146>", inline=True)
         elif (guess > num):
-            out.add_field(name="You guessed wrong...Unlucky", value="<:NotLikeThis:791431758024802336>")
+            out.add_field(name="You guessed wrong...Unlucky", value="<:NotLikeThis:791431758024802336>", inline=True)
         elif (guess == num):
             out.add_field(name="We rolled the same number! Pog!", value='\u200b')
         await ctx.send(embed=out)
@@ -237,6 +237,7 @@ async def help(ctx):
     out.add_field(name = "s!unedit", value = "Displays the last edited message as before it was edited.", inline = False)
     out.add_field(name = "s!poll question: choice1 choice2...", value = "Posts a poll with given choices.", inline = False)
     out.add_field(name = "s!choose option1 option2 ...", value = "Randomly chooses one of the given options.", inline = False)
+    out.add_field(name = "s!highlow:, value = "Play a game of higher or lower.", inline = False)
     await ctx.send(embed = out)
 
 
