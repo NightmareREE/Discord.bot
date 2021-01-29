@@ -5,6 +5,8 @@ from discord.ext import commands
 from datetime import datetime
 import os
 import re
+import pytz
+
 bot = commands.Bot(command_prefix="s!", intents=discord.Intents.all())
 bot.remove_command('help')
 lastdel = {}
@@ -224,6 +226,36 @@ async def on_message(message):
             await message.author.send("No bad words please.")
     await bot.process_commands(message)
 
+########################################################################################################################
+@bot.command()
+async def times(ctx):
+    #now = datetime.now()
+    #current_time = now.strftime("%H:%M:%S")
+    #await ctx.send(current_time)
+    out = discord.Embed(title="Current Time:", color = 0xff0000)
+
+    tz_Los_Angel = pytz.timezone('America/Los_Angeles')
+    datetime_LA = datetime.now(tz_Los_Angel)
+    la_time = datetime_LA.strftime("%H:%M:%S")
+    out.add_field(name="Los Angeles Time: ", value=la_time, inline=False)
+
+    tz_NY = pytz.timezone('America/New_York')
+    datetime_NY = datetime.now(tz_NY)
+    ny_time = datetime_NY.strftime("%H:%M:%S")
+    out.add_field(name = "New York Time: ", value = ny_time, inline = False)
+
+    tz_London = pytz.timezone('Europe/London')
+    datetime_London = datetime.now(tz_London)
+    ldn_time = datetime_London.strftime("%H:%M:%S")
+    out.add_field(name = "London Time: ", value = ldn_time, inline = False)
+
+    tz_Hong_Kong = pytz.timezone('Asia/Hong_Kong')
+    datetime_HK = datetime.now(tz_Hong_Kong)
+    hk_time = datetime_HK.strftime("%H:%M:%S")
+    out.add_field(name = "Hong Kong Time: ", value = hk_time, inline = False)
+
+    #out.add_field(name = current_time, value = ".", inline = True)
+    await ctx.send(embed = out)
 ########################################################################################################################
 @bot.command()
 async def help(ctx):
