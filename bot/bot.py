@@ -115,7 +115,7 @@ async def highlow(ctx):
     while(yep):
         @bot.event
         async def on_message(message):
-                yep = False
+            yep = False
             if (message.author.id == user):
                 if(guess > num):
                     if(message.content.lower() == "higher"):
