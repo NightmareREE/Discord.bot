@@ -107,11 +107,11 @@ async def highlow(ctx):
     yep = True
     user = ctx.message.author.id
     num = random.randrange(1,101)
-    embed = discord.Embed(title="The Number I rolled is ".join(num), color=0xff0000)
+    embed = discord.Embed(title="The Number I rolled is "+num, color=0xff0000)
     embed.add_field(name="Will the next number be higher or lower?", value="undefined", inline=True)
     await ctx.send(embed=embed)
     guess = random.randrange(1,101)
-    out = discord.Embed(title="The number rolled is ".join(guess), color=0xff0000)
+    out = discord.Embed(title="The number rolled is "+guess, color=0xff0000)
     while(yep):
         @bot.event()
         async def on_message(message):
