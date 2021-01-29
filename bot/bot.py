@@ -105,7 +105,7 @@ async def order(ctx, *args):
 @bot.command()
 async def highlow(ctx):
     yep = True
-    user = ctx.user.id
+    user = ctx.message.author.id
     num = random.randrange(1,101)
     embed = discord.Embed(title="The Number I rolled is ".join(num), color=0xff0000)
     embed.add_field(name="Will the next number be higher or lower?", value="undefined", inline=True)
