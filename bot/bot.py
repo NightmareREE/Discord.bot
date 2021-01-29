@@ -115,8 +115,8 @@ async def highlow(ctx):
     while(yep):
         @bot.event
         async def on_message(message):
-            if (message.author.id == user):
                 yep = False
+            if (message.author.id == user):
                 if(guess > num):
                     if(message.content.lower() == "higher"):
                         out.add_field(name="You guessed correctly!", value='\u200b', inLine=True)
