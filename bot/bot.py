@@ -27,7 +27,7 @@ async def on_ready():
     DATABASE_URL = os.environ['DATABASE_URL']
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cursor = conn.cursor()
-    create_table_query = 'CREATE TABLE IF NOT EXISTS points(id INTEGER PRIMARY KEY, name TEST, bet INT)'
+    create_table_query = 'CREATE TABLE IF NOT EXISTS points(id INTEGER PRIMARY KEY, name TEXT, bet INT)'
     cursor.execute(create_table_query)
     conn.commit()
 ########################################################################################################################
