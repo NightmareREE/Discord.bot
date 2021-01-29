@@ -114,6 +114,10 @@ async def highlow(ctx):
     out = discord.Embed(title="The number rolled is " + str(guess), color=0xff0000)
     @bot.event
     async def on_message(message):
+        if message.author == bot.user:
+            return
+        if message.author.bot:
+            return
         yep = False
         if (message.author.id == user):
             if(guess > num):
