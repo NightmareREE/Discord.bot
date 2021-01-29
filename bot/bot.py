@@ -112,25 +112,24 @@ async def highlow(ctx):
     await ctx.send(embed=embed)
     guess = random.randrange(1,101)
     out = discord.Embed(title="The number rolled is " + str(guess), color=0xff0000)
-    while(yep):
-        @bot.event
-        async def on_message(message):
-            yep = False
-            if (message.author.id == user):
-                if(guess > num):
-                    if(message.content.lower() == "higher"):
-                        out.add_field(name="You guessed correctly!", value='\u200b', inLine=True)
-                    elif(message.content.lower() == "lower"):
-                        out.add_field(name="You guess wrong...Unlucky", value='\u200b', inLine=True)
-                elif(guess < num):
-                    if (message.content.lower() == "lower"):
-                        out.add_field(name="You guessed correctly!", value='\u200b', inLine=True)
-                    elif (message.content.lower() == "higher"):
-                        out.add_field(name="You guessed wrong...Unlucky", value='\u200b', inLine=True)
-                elif(guess == num):
-                    out.add_field(name="We rolled the same number! Pog!", value='\u200b', inLine=True)
-            else:
-                return
+    @bot.event
+    async def on_message(message):
+        yep = False
+        if (message.author.id == user):
+            if(guess > num):
+                if(message.content.lower() == "higher"):
+                    out.add_field(name="You guessed correctly!", value='\u200b', inLine=True)
+                elif(message.content.lower() == "lower"):
+                    out.add_field(name="You guess wrong...Unlucky", value='\u200b', inLine=True)
+            elif(guess < num):
+                if (message.content.lower() == "lower"):
+                    out.add_field(name="You guessed correctly!", value='\u200b', inLine=True)
+                elif (message.content.lower() == "higher"):
+                    out.add_field(name="You guessed wrong...Unlucky", value='\u200b', inLine=True)
+            elif(guess == num):
+                out.add_field(name="We rolled the same number! Pog!", value='\u200b', inLine=True)
+        else:
+            return
     await ctx.send(embed=out)
 
 ########################################################################################################################
