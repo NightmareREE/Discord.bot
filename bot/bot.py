@@ -102,7 +102,34 @@ async def order(ctx, *args):
     else:
         await ctx.send("You need to provide at least 1 argument.")
 ########################################################################################################################
-
+@bot.command()
+async def highlow(ctx):
+    yep = True
+    user = ctx.user.id
+    num = random.randrange(1,101)
+    embed = discord.Embed(title="The Number I rolled is ".join(num), color=0xff0000)
+    embed.add_field(name="Will the next number be higher or lower?", value="undefined", inline=True)
+    await ctx.send(embed=embed)
+    guess = random.randrange(1,101)
+    out = discord.Embed(title="The number rolled is ".join(guess), color=0xff0000)
+    while(yep):
+        @bot.event()
+        async def on_message(message):
+            if (message.author.id == user):
+                yep = False
+                if(guess > num):
+                    if(message.content.lower() == "higher"):
+                        out.add_field(name="You guessed correctly!", value="undefined", inLine=True)
+                    if(message.content.lower() == "lower"):
+                        out.add_field(name="You guess wrong...Unlucky", value="undefined", inLine=True)
+                elif(guess < num):
+                    if (message.content.lower() == "lower"):
+                        out.add_field(name="You guessed correctly!", value="undefined", inLine=True)
+                    if (message.content.lower() == "higher"):
+                        out.add_field(name="You guess wrong...Unlucky", value="undefined", inLine=True)
+                elif(guess == num):
+                    out.add_field(name="We rolled the same number! Pog!", value="undefined", inLine=True)
+            await ctx.send(embed=out)
 
 ########################################################################################################################
 emojis = [f"{num}\u20e3" for num in range(1, 10)]
