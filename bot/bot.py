@@ -86,6 +86,11 @@ async def jess(ctx):
 @bot.command()
 async def yoshi(ctx):
     await ctx.send("<@277268838205358081> cuck")
+                       
+                       
+@bot.command()
+async def twiggy(ctx):
+    await ctx.send("<@214517446009159681> short <:OMEGALUL:792056115562020925>)           
 ########################################################################################################################
 
 @bot.command()
