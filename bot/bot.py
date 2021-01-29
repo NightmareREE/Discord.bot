@@ -110,15 +110,14 @@ async def highlow(ctx):
     embed = discord.Embed(title="The Number I rolled is "+str(num), color=0xff0000)
     embed.add_field(name="Will the next number be higher or lower?", value="Type 'higher' or 'lower'", inline=True)
     await ctx.send(embed=embed)
-    guess = random.randrange(1,101)
-    out = discord.Embed(title="The number rolled is " + str(guess), color=0xff0000)
     @bot.event
     async def on_message(message):
+        guess = random.randrange(1, 101)
+        out = discord.Embed(title="The number rolled is " + str(guess), color=0xff0000)
         if message.author == bot.user:
             return
         if message.author.bot:
             return
-        yep = False
         if (message.author.id == user):
             if(guess > num):
                 if(message.content.lower() == "higher"):
@@ -134,7 +133,7 @@ async def highlow(ctx):
                 out.add_field(name="We rolled the same number! Pog!", value='\u200b', inLine=True)
         else:
             return
-    await ctx.send(embed=out)
+        await ctx.send(embed=out)
 
 ########################################################################################################################
 emojis = [f"{num}\u20e3" for num in range(1, 10)]
