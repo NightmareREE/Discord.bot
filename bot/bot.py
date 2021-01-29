@@ -6,7 +6,7 @@ from datetime import datetime
 import os
 import re
 
-bot = commands.Bot(command_prefix="$", intents=discord.Intents.all())
+bot = commands.Bot(command_prefix="#", intents=discord.Intents.all())
 bot.remove_command('help')
 lastdel = {}
 lastedit = {}
@@ -204,12 +204,12 @@ async def on_message(message):
 async def help(ctx):
 
     out = discord.Embed(title = "Commands:", color = 0xff0000)
-    out.add_field(name = "!roll", value = "Rolls a random number between 1 and 100.", inline= False)
-    out.add_field(name = "!order arg1 arg2 ...", value = "Puts the given arguments in a random order.", inline= False)
-    out.add_field(name = "!replay", value = "Sends the last deleted message.", inline = False)
-    out.add_field(name = "!unedit", value = "Displays the last edited message as before it was edited.", inline = False)
-    out.add_field(name = "!poll question: choice1 choice2...", value = "Posts a poll with given choices.", inline = False)
-    out.add_field(name = "!choose option1 option2 ...", value = "Randomly chooses one of the given options.", inline = False)
+    out.add_field(name = "#roll", value = "Rolls a random number between 1 and 100.", inline= False)
+    out.add_field(name = "#order arg1 arg2 ...", value = "Puts the given arguments in a random order.", inline= False)
+    out.add_field(name = "#replay", value = "Sends the last deleted message.", inline = False)
+    out.add_field(name = "#unedit", value = "Displays the last edited message as before it was edited.", inline = False)
+    out.add_field(name = "#poll question: choice1 choice2...", value = "Posts a poll with given choices.", inline = False)
+    out.add_field(name = "#choose option1 option2 ...", value = "Randomly chooses one of the given options.", inline = False)
     await ctx.send(embed = out)
 
 
