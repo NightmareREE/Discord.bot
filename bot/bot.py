@@ -12,15 +12,7 @@ lastdel = {}
 lastedit = {}
 lastmsg = {}
 TOKEN = os.getenv("DISCORD_TOKEN")
-DATABASE_URL = os.environ['DATABASE_URL']
-conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-cursor = conn.cursor()
-create_table_query = '''CREATE TABLE points
-    (ID INTEGER PRIMARY KEY     NOT NULL
-    name    TEXT    NOT NULL
-    points  INT     NOR NULL);'''
-cursor.execute(create_table_query)
-conn.commit()
+
 ########################################################################################################################
 @bot.event
 async def on_ready():
