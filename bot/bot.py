@@ -107,18 +107,18 @@ async def highlow(ctx):
     user = ctx.message.author.id
     num = random.randrange(1, 101)
     embed = discord.Embed(title="The Number I rolled is " + str(num), color=0xff0000)
-    embed.add_field(name="Will the next number be higher or lower?", value="Type 's!higher' or 's!lower'", inline=True)
+    embed.add_field(name="Will the next number be higher or lower?", value="Type 's!higher' or 's!lower'")
     await ctx.send(embed=embed)
     @bot.command()
     async def higher(ctx):
         guess = random.randrange(1, 101)
         out = discord.Embed(title="The number rolled is " + str(guess), color=0xff0000)
         if (guess > num):
-            out.add_field(name="You guessed correctly!", value='\u200b', inLine=True)
+            out.add_field(name="You guessed correctly!", value='\u200b')
         elif (guess < num):
-            out.add_field(name="You guessed wrong...Unlucky", value='\u200b', inLine=True)
+            out.add_field(name="You guessed wrong...Unlucky", value='\u200b')
         elif (guess == num):
-            out.add_field(name="We rolled the same number! Pog!", value='\u200b', inLine=True)
+            out.add_field(name="We rolled the same number! Pog!", value='\u200b')
         await ctx.send(embed=out)
 
     @bot.command()
@@ -126,11 +126,11 @@ async def highlow(ctx):
         guess = random.randrange(1, 101)
         out = discord.Embed(title="The number rolled is " + str(guess), color=0xff0000)
         if (guess < num):
-            out.add_field(name="You guessed correctly!", value='\u200b', inLine=True)
+            out.add_field(name="You guessed correctly!", value='\u200b')
         elif (guess > num):
-            out.add_field(name="You guessed wrong...Unlucky", value='\u200b', inLine=True)
+            out.add_field(name="You guessed wrong...Unlucky", value='\u200b')
         elif (guess == num):
-            out.add_field(name="We rolled the same number! Pog!", value='\u200b', inLine=True)
+            out.add_field(name="We rolled the same number! Pog!", value='\u200b')
         await ctx.send(embed=out)
 
 
