@@ -14,6 +14,7 @@ lastdel = {}
 lastedit = {}
 lastmsg = {}
 TOKEN = os.getenv("DISCORD_TOKEN")
+DATABASE_URL = os.environ['DATABASE_URL']
 
 ########################################################################################################################
 @bot.event
@@ -24,7 +25,6 @@ async def on_ready():
         print(member)
     await bot.change_presence(activity=discord.Game(name='Overwatch'))
     ##
-    DATABASE_URL = os.environ['DATABASE_URL']
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cursor = conn.cursor()
     create_table_query = 'CREATE TABLE IF NOT EXISTS points(id INTEGER PRIMARY KEY, name TEXT, points INT)'
