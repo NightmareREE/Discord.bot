@@ -27,7 +27,7 @@ async def on_ready():
     DATABASE_URL = os.environ['DATABASE_URL']
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cursor = conn.cursor()
-    create_table_query = 'CREATE TABLE IF NOT EXISTS points(id INTEGER PRIMARY KEY, name TEXT, bet INT)'
+    create_table_query = 'CREATE TABLE IF NOT EXISTS points(id INTEGER PRIMARY KEY, name TEXT, points INT)'
     cursor.execute(create_table_query)
     conn.commit()
 ########################################################################################################################
@@ -111,35 +111,97 @@ async def order(ctx, *args):
 ########################################################################################################################
 @bot.command()
 async def highlow(ctx):
-    user = ctx.message.author.id
     num = random.randrange(1, 101)
     embed = discord.Embed(title="The Number I rolled is " + str(num), color=0xff0000)
     embed.add_field(name="Will the next number be higher or lower?", value="Type 's!higher' or 's!lower'")
     await ctx.send(embed=embed)
+
     @bot.command()
     async def higher(ctx):
+        db = psycopg2.connect(DATABASE_URL, sslmode='require')
+        c = db.cursor()
+        c.execute('SELECT * FROM points WHERE id= ?', (ctx.message.author.id,))
+        user = c.fetchone()
+
+        if user is None:
+            c.execute('INSERT INTO points(id, name, points) VALUES(?,?,?)',
+                      (ctx.message.author.id, ctx.message.author.name, 1))
+            db.commit()
+            return
+
+        if ctx.message.author.name != user[1]:
+            c.execute('UPDATE users SET name = ? WHERE user= ?', (ctx.message.author.name, ctx.message.author.id))
+
+
+
         guess = random.randrange(1, 101)
         out = discord.Embed(title="The number rolled is " + str(guess), color=0xff0000)
         if (guess > num):
-            out.add_field(name="You guessed correctly! <:EZ:788447395805265990>", value='\u200b', inline = True)
+            out.add_field(name="You guessed correctly! <:EZ:788447395805265990>", value='\u200b', inline=True)
+            addpoints = random.randint(10, 25)
+            points = user[3] + addpoints
+            c.execute('UPDATE points SET points = ?, name = ? WHERE id= ?',
+                      (points, ctx.message.author.name, ctx.message.author.id))
         elif (guess < num):
-            out.add_field(name="You guessed wrong...Unlucky <:NotLikeThis:791431758024802336>", value='\u200b', inline=True)
+            out.add_field(name="You guessed wrong...Unlucky <:NotLikeThis:791431758024802336>", value='\u200b',
+                          inline=True)
         elif (guess == num):
             out.add_field(name="We rolled the same number!", value='\u200b')
+        db.commit()
         await ctx.send(embed=out)
+
 
     @bot.command()
     async def lower(ctx):
+        db = psycopg2.connect(DATABASE_URL, sslmode='require')
+        c = db.cursor()
+        c.execute('SELECT * FROM users WHERE id= ?', (ctx.message.author.id,))
+        user = c.fetchone()
+
+        if user is None:
+            c.execute('INSERT INTO points(id, name, points) VALUES(?,?,?)',
+                      (ctx.message.author.id, ctx.message.author.name, 1))
+            db.commit()
+            return
+
+        if ctx.message.author.name != user[1]:
+            c.execute('UPDATE points SET name = ? WHERE id= ?', (ctx. message.author.name, ctx.message.author.id))
+
+
+
+
         guess = random.randrange(1, 101)
         out = discord.Embed(title="The number rolled is " + str(guess), color=0xff0000)
         if (guess < num):
+            addpoints = random.randint(10, 25)
             out.add_field(name="You guessed correctly! <:EZ:788447395805265990>", value='\u200b', inline=True)
+            points = user[3] + addpoints
+            c.execute('UPDATE points SET points = ?, name = ? WHERE id= ?',
+                      (points, ctx.message.author.name, ctx.message.author.id))
         elif (guess > num):
-            out.add_field(name="You guessed wrong...Unlucky <:NotLikeThis:791431758024802336>", value='\u200b', inline=True)
+            out.add_field(name="You guessed wrong...Unlucky <:NotLikeThis:791431758024802336>", value='\u200b',
+                          inline=True)
         elif (guess == num):
             out.add_field(name="We rolled the same number! Pog!", value='\u200b')
+        db.commit
         await ctx.send(embed=out)
 
+@bot.command(pass_context=True)
+async def points(ctx):
+    try:
+        _, member = (ctx.message.content).split(' ', 1)
+        member = re.sub("[^0-9]", "", member)
+    except:
+        member = ctx.message.author.id
+    db = psycopg2.connect(DATABASE_URL, sslmode='require')
+    c = db.cursor()
+    c.execute(
+        'SELECT * FROM points where id= ?', (ctx.message.author.id,))
+    user = c.fetchone()
+    out = discord.Embed(title='{}\'s Information'.format(ctx.message.author.name), color=0xff0000)
+    out.set_thumbnail(url=ctx.message.author.avatar_url)
+    out.add_field(name='Level', value=user[2])
+    await ctx.send(embed=out)
 
 ########################################################################################################################
 emojis = [f"{num}\u20e3" for num in range(1, 10)]
