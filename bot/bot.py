@@ -120,17 +120,17 @@ async def highlow(ctx):
     async def higher(ctx):
         db = psycopg2.connect(DATABASE_URL, sslmode='require')
         c = db.cursor()
-        c.execute('SELECT * FROM points WHERE id= ?', (ctx.message.author.id,))
+        c.execute('SELECT * FROM points WHERE id= %s', (ctx.message.author.id,))
         user = c.fetchone()
 
         if user is None:
-            c.execute('INSERT INTO points(id, name, points) VALUES(?,?,?)',
+            c.execute('INSERT INTO points(id, name, points) VALUES(%s,%s,%s)',
                       (ctx.message.author.id, ctx.message.author.name, 1))
             db.commit()
             return
 
         if ctx.message.author.name != user[1]:
-            c.execute('UPDATE users SET name = ? WHERE user= ?', (ctx.message.author.name, ctx.message.author.id))
+            c.execute('UPDATE users SET name = %s WHERE user= %s', (ctx.message.author.name, ctx.message.author.id))
 
 
 
@@ -140,7 +140,7 @@ async def highlow(ctx):
             out.add_field(name="You guessed correctly! <:EZ:788447395805265990>", value='\u200b', inline=True)
             addpoints = random.randint(10, 25)
             points = user[3] + addpoints
-            c.execute('UPDATE points SET points = ?, name = ? WHERE id= ?',
+            c.execute('UPDATE points SET points = %s, name = %s WHERE id= %s',
                       (points, ctx.message.author.name, ctx.message.author.id))
         elif (guess < num):
             out.add_field(name="You guessed wrong...Unlucky <:NotLikeThis:791431758024802336>", value='\u200b',
@@ -155,17 +155,17 @@ async def highlow(ctx):
     async def lower(ctx):
         db = psycopg2.connect(DATABASE_URL, sslmode='require')
         c = db.cursor()
-        c.execute('SELECT * FROM users WHERE id= ?', (ctx.message.author.id,))
+        c.execute('SELECT * FROM users WHERE id= %s', (ctx.message.author.id,))
         user = c.fetchone()
 
         if user is None:
-            c.execute('INSERT INTO points(id, name, points) VALUES(?,?,?)',
+            c.execute('INSERT INTO points(id, name, points) VALUES(%s,%s,%s)',
                       (ctx.message.author.id, ctx.message.author.name, 1))
             db.commit()
             return
 
         if ctx.message.author.name != user[1]:
-            c.execute('UPDATE points SET name = ? WHERE id= ?', (ctx. message.author.name, ctx.message.author.id))
+            c.execute('UPDATE points SET name = %s WHERE id= %s', (ctx. message.author.name, ctx.message.author.id))
 
 
 
@@ -176,7 +176,7 @@ async def highlow(ctx):
             addpoints = random.randint(10, 25)
             out.add_field(name="You guessed correctly! <:EZ:788447395805265990>", value='\u200b', inline=True)
             points = user[3] + addpoints
-            c.execute('UPDATE points SET points = ?, name = ? WHERE id= ?',
+            c.execute('UPDATE points SET points = %s, name = %s WHERE id= %s',
                       (points, ctx.message.author.name, ctx.message.author.id))
         elif (guess > num):
             out.add_field(name="You guessed wrong...Unlucky <:NotLikeThis:791431758024802336>", value='\u200b',
@@ -195,8 +195,7 @@ async def points(ctx):
         member = ctx.message.author.id
     db = psycopg2.connect(DATABASE_URL, sslmode='require')
     c = db.cursor()
-    c.execute(
-        'SELECT * FROM points where id= ?', (ctx.message.author.id,))
+    c.execute('SELECT * FROM points where id= %s', (ctx.message.author.id,))
     user = c.fetchone()
     out = discord.Embed(title='{}\'s Information'.format(ctx.message.author.name), color=0xff0000)
     out.set_thumbnail(url=ctx.message.author.avatar_url)
