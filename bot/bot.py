@@ -332,7 +332,7 @@ async def on_message(message):
 
 
 
-    c.execute('SELECT * FROM users WHERE id= ?', (message.author.id,))
+    c.execute('SELECT * FROM users WHERE id= message.author.id')
     user = c.fetchone()
 
     if user is None:
