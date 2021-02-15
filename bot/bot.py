@@ -328,7 +328,7 @@ async def on_message(message):
         if bad_word in message.content:
             await message.delete()
             await message.author.send("No bad words please.")
-    c.execute('SELECT * FROM users WHERE id= ?' % message.author.id)
+    c.execute('SELECT * FROM users WHERE id= $%d' % message.author.id)
     user = c.fetchone()
 
     if user is None:
