@@ -160,72 +160,29 @@ async def highlow(ctx):
 
     @bot.command()
     async def higher(ctx):
-        db = psycopg2.connect(DATABASE_URL, sslmode='require')
-        c = db.cursor()
-        c.execute('SELECT * FROM points WHERE id= %s', (ctx.message.author.id,))
-        user = c.fetchone()
-
-        if user is None:
-            c.execute('INSERT INTO points(id, name, points) VALUES(%s,%s,%s)',
-                      (ctx.message.author.id, ctx.message.author.name, 1))
-            db.commit()
-            return
-
-        if ctx.message.author.name != user[1]:
-            c.execute('UPDATE users SET name = %s WHERE user= %s', (ctx.message.author.name, ctx.message.author.id))
-
-
-
         guess = random.randrange(1, 101)
         out = discord.Embed(title="The number rolled is " + str(guess), color=0xff0000)
         if (guess > num):
             out.add_field(name="You guessed correctly! <:EZ:788447395805265990>", value='\u200b', inline=True)
-            addpoints = random.randint(10, 25)
-            points = user[3] + addpoints
-            c.execute('UPDATE points SET points = %s, name = %s WHERE id= %s',
-                      (points, ctx.message.author.name, ctx.message.author.id))
         elif (guess < num):
             out.add_field(name="You guessed wrong...Unlucky <:NotLikeThis:791431758024802336>", value='\u200b',
                           inline=True)
         elif (guess == num):
             out.add_field(name="We rolled the same number!", value='\u200b')
-        db.commit()
         await ctx.send(embed=out)
 
 
     @bot.command()
     async def lower(ctx):
-        db = psycopg2.connect(DATABASE_URL, sslmode='require')
-        c = db.cursor()
-        c.execute('SELECT * FROM users WHERE id= %s', (ctx.message.author.id,))
-        user = c.fetchone()
-
-        if user is None:
-            c.execute('INSERT INTO points(id, name, points) VALUES(%s,%s,%s)',
-                      (ctx.message.author.id, ctx.message.author.name, 1))
-            db.commit()
-            return
-
-        if ctx.message.author.name != user[1]:
-            c.execute('UPDATE points SET name = %s WHERE id= %s', (ctx. message.author.name, ctx.message.author.id))
-
-
-
-
         guess = random.randrange(1, 101)
         out = discord.Embed(title="The number rolled is " + str(guess), color=0xff0000)
         if (guess < num):
-            addpoints = random.randint(10, 25)
             out.add_field(name="You guessed correctly! <:EZ:788447395805265990>", value='\u200b', inline=True)
-            points = user[3] + addpoints
-            c.execute('UPDATE points SET points = %s, name = %s WHERE id= %s',
-                      (points, ctx.message.author.name, ctx.message.author.id))
         elif (guess > num):
             out.add_field(name="You guessed wrong...Unlucky <:NotLikeThis:791431758024802336>", value='\u200b',
                           inline=True)
         elif (guess == num):
-            out.add_field(name="We rolled the same number! Pog!", value='\u200b')
-        db.commit
+            out.add_field(name="We rolled the same number! Pog!", value='\u200b', inLine=True)
         await ctx.send(embed=out)
 
 
@@ -332,29 +289,30 @@ async def on_message(message):
     user = c.fetchone()
 
     if user is None:
-        c.execute('INSERT INTO users(id, name, level, exp, rawexp, time, points) VALUES(%d,%s,%d,%d,%d,%s,%d)' %
+        c.execute('INSERT INTO users(id=%d, name=%s, level=%d, exp=%d, rawexp=%d, time=%d, points=%d)' %
                   (message.author.id, message.author.name, 1, 0, 0, time.time(), 0))
         db.commit()
         return
 
     if message.author.name != user[1]:
-        c.execute('UPDATE users SET name = %s WHERE id= %d'% (message.author.name, message.author.id))
+        c.execute('UPDATE users SET name = %s WHERE id= %d'% message.author.name, message.author.id)
 
     if (time.time() - user[5]) > 60:
         addedexp = random.randint(10, 25)
         exp = user[3] + addedexp
         rawexp = user[4] + addedexp
         c.execute('UPDATE users SET exp = %d, rawexp = %d, name = %s, time = %s WHERE id= %d'%
-                  (exp, rawexp, message.author.name, time.time(), message.author.id))
+                  exp, rawexp, message.author.name, time.time(), message.author.id)
 
         if (exp > threshold(user[2])):
             level = user[2] + 1
-            c.execute('UPDATE users SET exp = %d, level = %d WHERE id= %d'% (0, level, message.author.id))
+            c.execute('UPDATE users SET exp = %d, level = %d WHERE id= %d'% 0, level, message.author.id)
             await message.channel.send(f"{message.author.mention} Pog! You leveled up! You're now level {level}")
             #** {} **.'.format(level)
     db.commit()
+
     await bot.process_commands(message)
-    
+
 
 ########################################################################################################################
 @bot.command()
