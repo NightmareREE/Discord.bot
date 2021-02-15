@@ -328,7 +328,31 @@ async def on_message(message):
         if bad_word in message.content:
             await message.delete()
             await message.author.send("No bad words please.")
+    c.execute('SELECT * FROM users WHERE id= ?' % (message.author.id))
+    user = c.fetchone()
 
+    if user is None:
+        c.execute('INSERT INTO users(id, name, level, exp, rawexp, time, points) VALUES(?,?,?,?,?,?,?)',
+                  (message.author.id, message.author.name, 1, 0, 0, time.time(), 0))
+        db.commit()
+        return
+
+    if message.author.name != user[1]:
+        c.execute('UPDATE users SET name = ? WHERE id= ?', (message.author.name, message.author.id))
+
+    if (time.time() - user[5]) > 60:
+        addedexp = random.randint(10, 25)
+        exp = user[3] + addedexp
+        rawexp = user[4] + addedexp
+        c.execute('UPDATE users SET exp = ?, rawexp = ?, name = ?, time = ? WHERE id= ?',
+                  (exp, rawexp, message.author.name, time.time(), message.author.id))
+
+        if (exp > threshold(user[2])):
+            level = user[2] + 1
+            c.execute('UPDATE users SET exp = ?, level = ? WHERE id= ?', (0, level, message.author.id))
+            await message.channel.send(f"{message.author.mention} Pog! You leveled up! You're now level {level}")
+            #** {} **.'.format(level)
+    db.commit()
     await bot.process_commands(message)
     
 
