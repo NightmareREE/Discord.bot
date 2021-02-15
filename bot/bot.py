@@ -289,10 +289,9 @@ async def on_message(message):
     user = c.fetchone()
 
     if user is None:
-        c.execute("""
-                  INSERT INTO users(id, name, level, exp, rawexp, time, points)
-                  VALUES(%s,%s,%s,%s,%s,%s,%s); """,
-                  (message.author.id, message.author.name, 1, 0, 0, time.time(), 0,))
+        c.execute('INSERT INTO users(id, name, level, exp, rawexp, time, points)'
+            'VALUES(%s,%s,%s,%s,%s,%s,%s)',
+            (message.author.id, message.author.name, 1, 0, 0, time.time(), 0,))
         db.commit()
         return
 
