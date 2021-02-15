@@ -300,7 +300,7 @@ async def on_message(message):
         exp = user[3] + addedexp
         rawexp = user[4] + addedexp
         c.execute('UPDATE users SET exp = %s, rawexp = %s, name = %s, time = %s WHERE id= %s',
-                  exp, rawexp, message.author.name, time.time(), message.author.id))
+                  exp, rawexp, message.author.name, time.time(), message.author.id)
 
         if (exp > threshold(user[2])):
             level = user[2] + 1
