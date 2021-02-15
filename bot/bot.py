@@ -46,12 +46,10 @@ async def rank(ctx):
         member = ctx.message.author.id
 
 
-    c.execute(
-        "SELECT user.*, (SELECT count(*) FROM users AS members WHERE members.rawexp > user.rawexp) as Rank FROM users AS user WHERE id=%s", (ctx.message.author.id,))
-
+    c.execute('SELECT 1 + count(*) AS rank FROM scores WHERE score > (SELECT score FROM scores WHERE id=%s)', (ctx.message.author.id,))
     user = c.fetchone()
 
-    rank = str(user[6] + 1)
+    rank = str(user[7] + 1)
 
     out = discord.Embed(title='{}\'s Information'.format(ctx.message.author.name), color=0xff0000)
     out.set_thumbnail(url=ctx.message.author.avatar_url)
