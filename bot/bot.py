@@ -45,7 +45,7 @@ async def rank(ctx):
     except:
         member = ctx.message.author.id
 
-    c.execute('SELECT 1 + count(*) AS rank FROM users WHERE rawexp > (SELECT rawexp FROM users WHERE id=%s)', (ctx.message.author.id,))
+    c.execute('SELECT users , (SELECT count(*) FROM users AS members WHERE members.rawexp > user.rawexp) as Rank FROM users AS user WHERE id=%s',(ctx.message.author.id,))
     user = c.fetchone()
 
     rank = str(user[5] + 1)
