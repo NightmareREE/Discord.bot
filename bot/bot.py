@@ -299,12 +299,12 @@ async def on_message(message):
         addedexp = random.randint(10, 25)
         exp = user[3] + addedexp
         rawexp = user[4] + addedexp
-        c.execute('UPDATE users SET exp = %d, rawexp = %d, name = %s, time = %s WHERE id= %d'%
-                  exp, rawexp, message.author.name, time.time(), message.author.id)
+        c.execute('UPDATE users SET exp = %s, rawexp = %s, name = %s, time = %s WHERE id= %s',
+                  exp, rawexp, message.author.name, time.time(), message.author.id))
 
         if (exp > threshold(user[2])):
             level = user[2] + 1
-            c.execute('UPDATE users SET exp = %d, level = %d WHERE id= %d'% 0, level, message.author.id)
+            c.execute('UPDATE users SET exp = %s, level = %s WHERE id= %s', 0, level, message.author.id)
             await message.channel.send(f"{message.author.mention} Pog! You leveled up! You're now level {level}")
             #** {} **.'.format(level)
     db.commit()
