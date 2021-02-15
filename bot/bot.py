@@ -27,7 +27,7 @@ async def on_ready():
         print(member)
     await bot.change_presence(activity=discord.Game(name='Overwatch'))
     ##
-    create_table_query = 'CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, name TEXT, level INT, exp INTEGER, rawexp INTEGER, time REAL, points INTEGER)'
+    create_table_query = 'CREATE TABLE IF NOT EXISTS users(id bigint PRIMARY KEY, name TEXT, level INT, exp INTEGER, rawexp INTEGER, time REAL, points INTEGER)'
     c.execute(create_table_query)
     db.commit()
 
