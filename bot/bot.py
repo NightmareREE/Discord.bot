@@ -353,27 +353,27 @@ async def roulette(ctx, bet):
     if(bet == "all"):
         if(num == 0):
             c.execute('UPDATE users SET points=0 WHERE id=%s', (ctx.message.author.id))
-            embed = discord.Embed(title=f"{ctx.message.mention} Lost {oldpoints} and now has 0 points <:NotLikeThis:791431758024802336>")
+            embed = discord.Embed(title=f"{ctx.message.author.mention} Lost {oldpoints} and now has 0 points <:NotLikeThis:791431758024802336>")
             await ctx.send(embed=out)
         elif(num==1):
             newpoints= oldpoints * 2
             c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
             c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
             user1 = c.fetchone()
-            embed = discord.Embed(title=f"{ctx.message.mention} Won {newpoints} and now has {user1[6]} points! <:EZ:788447395805265990>")
+            embed = discord.Embed(title=f"{ctx.message.author.mention} Won {newpoints} and now has {user1[6]} points! <:EZ:788447395805265990>")
             await ctx.send(embed=out)
     if(bet >= oldpoints):
         if(num == 0):
             newpoints = oldpoints - bet
             c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
-            embed = discord.Embed(title=f"{ctx.message.mention} Lost {bet} and now has 0 points <:NotLikeThis:791431758024802336>")
+            embed = discord.Embed(title=f"{ctx.message.author.mention} Lost {bet} and now has 0 points <:NotLikeThis:791431758024802336>")
             await ctx.send(embed=out)
         elif(num==1):
             newpoints= oldpoints * 2
             c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
             c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
             user1 = c.fetchone()
-            embed = discord.Embed(title=f"{ctx.message.mention} Won {newpoints} and now has {user1[6]} points! <:EZ:788447395805265990>")
+            embed = discord.Embed(title=f"{ctx.message.author.mention} Won {newpoints} and now has {user1[6]} points! <:EZ:788447395805265990>")
             await ctx.send(embed=out)
 
 ########################################################################################################################
