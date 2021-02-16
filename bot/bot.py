@@ -390,8 +390,8 @@ async def help(ctx):
     out.add_field(name="s!choose option1 option2 ...", value="Randomly chooses one of the given options.", inline=False)
     out.add_field(name="s!highlow", value="Play a game of higher or lower.", inline=False)
     out.add_field(name="s!times", value="Gives current time in multiple timezones.", inline=False)
-    out.add_field(name="s!roulette all/bet", value="Gambles however points you have with a 50% chance.", inLine=False)
-    out.add_field(name="s!rank", value="Checks your level and points.", inLine=False)
+    out.add_field(name="s!roulette all/bet", value="Gambles however points you have with a 50% chance.", inline=False)
+    out.add_field(name="s!rank", value="Checks your level and points.", inline=False)
     await ctx.send(embed=out)
 
 
