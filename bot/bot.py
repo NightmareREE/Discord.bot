@@ -49,11 +49,11 @@ async def rank(ctx):
     c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
 
     user = c.fetchone()
-    #rank = str(user[7] + 1)
+    rank = c.execute('SELECT id, rawexp, FIND_IN_SET(rawexp,(SELECT GROUP_CONCAT(rawexp ORDER BY rawexp DESC) FROM users)) AS rank FROM users WHERE id =%s',(ctx.message.author.id))
 
     out = discord.Embed(title='{}\'s Information'.format(ctx.message.author.name), color=0xff0000)
     out.set_thumbnail(url=ctx.message.author.avatar_url)
-    #out.add_field(name='Rank', value='#' + rank)
+    out.add_field(name='Rank', value='#' + (rank +1))
     out.add_field(name='Level', value=user[2])
     out.add_field(name='EXP', value='{}/{}'.format(user[3], threshold(user[2])))
     out.add_field(name='Total EXP', value=user[4])
