@@ -62,7 +62,13 @@ async def rank(ctx):
     await ctx.send(embed=out)
 
 ########################################################################################################################
-
+@bot.command(pass_context=True)
+async def leaderboard(ctx):
+    users=[]
+    c.execute('SELECT points, id FROM users ORDER BY points AS members')
+    users = c.fetchone
+    out = discord.Embed(title='Points Leaderboard', color=0xff0000)
+    await ctx.send(users)
 ########################################################################################################################
 @bot.event
 async def on_message_delete(message):
