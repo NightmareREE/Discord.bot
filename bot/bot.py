@@ -388,9 +388,9 @@ async def help(ctx):
     out.add_field(name="s!unedit", value="Displays the last edited message as before it was edited.", inline=False)
     out.add_field(name="s!poll question: choice1 choice2...", value="Posts a poll with given choices.", inline=False)
     out.add_field(name="s!choose option1 option2 ...", value="Randomly chooses one of the given options.", inline=False)
-    out.add_field(name="s!highlow", value="Play a game of higher or lower.", inline=False)
+    #out.add_field(name="s!highlow", value="Play a game of higher or lower.", inline=False)
     out.add_field(name="s!times", value="Gives current time in multiple timezones.", inline=False)
-    out.add_field(name="s!roulette all/bet", value="Gambles however points you have with a 50% chance.", inline=False)
+    out.add_field(name="s!roulette all/number", value="Gambles with points you bet with a 50% chance to double it.", inline=False)
     out.add_field(name="s!rank", value="Checks your level and points.", inline=False)
     await ctx.send(embed=out)
 
