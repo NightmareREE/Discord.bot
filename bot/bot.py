@@ -65,7 +65,7 @@ async def rank(ctx):
 @bot.command(pass_context=True)
 async def leaderboard(ctx):
     users=[]
-    c.execute('SELECT points, id FROM users ORDER BY points AS members')
+    c.execute('SELECT points, id FROM users  AS members ORDER BY points')
     users = c.fetchone
     out = discord.Embed(title='Points Leaderboard', color=0xff0000)
     await ctx.send(users)
