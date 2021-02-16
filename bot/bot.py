@@ -49,16 +49,19 @@ async def rank(ctx):
     c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
     user = c.fetchone()
 
-    c.execute('SELECT 1 + count(*) AS rank FROM users WHERE rawexp > (SELECT rawexp FROM users WHERE id=%s)', (ctx.message.author.id,))
+    #c.execute('SELECT 1 + count(*) AS rank FROM users WHERE rawexp > (SELECT rawexp FROM users WHERE id=%s)', (ctx.message.author.id,))
+    c.execute('SELECT 1 + count(*) AS rank FROM users WHERE points > (SELECT points FROM users WHERE id=%s)', (ctx.message.author.id,))
     rank = c.fetchone()
     out = discord.Embed(title='{}\'s Information'.format(ctx.message.author.name), color=0xff0000)
     out.set_thumbnail(url=ctx.message.author.avatar_url)
     out.add_field(name='Rank', value='#' + str(rank[0]))
-    out.add_field(name='Level', value=user[2])
-    out.add_field(name='EXP', value='{}/{}'.format(user[3], threshold(user[2])))
-    out.add_field(name='Total EXP', value=user[4])
+    #out.add_field(name='Level', value=user[2])
+    #out.add_field(name='EXP', value='{}/{}'.format(user[3], threshold(user[2])))
+    #out.add_field(name='Total EXP', value=user[4])
     out.add_field(name='Points', value=user[6])
     await ctx.send(embed=out)
+
+########################################################################################################################
 
 ########################################################################################################################
 @bot.event
@@ -304,7 +307,7 @@ async def on_message(message):
         if (exp > threshold(user[2])):
             level = user[2] + 1
             c.execute("UPDATE users SET exp=%s, level=%s WHERE id=%s", (0, level, message.author.id))
-            await message.channel.send(f"{message.author.mention} Pog! You leveled up! You're now level {level}")
+            #await message.channel.send(f"{message.author.mention} Pog! You leveled up! You're now level {level}")
             #** {} **.'.format(level)
     db.commit()
 
