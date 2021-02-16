@@ -53,7 +53,7 @@ async def rank(ctx):
     rank = c.fetchone()
     out = discord.Embed(title='{}\'s Information'.format(ctx.message.author.name), color=0xff0000)
     out.set_thumbnail(url=ctx.message.author.avatar_url)
-    out.add_field(name='Rank', value='#' + rank)
+    out.add_field(name='Rank', value='#' + rank[0])
     out.add_field(name='Level', value=user[2])
     out.add_field(name='EXP', value='{}/{}'.format(user[3], threshold(user[2])))
     out.add_field(name='Total EXP', value=user[4])
