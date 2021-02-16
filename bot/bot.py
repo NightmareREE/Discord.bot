@@ -341,7 +341,42 @@ async def times(ctx):
 
     # out.add_field(name = current_time, value = ".", inline = True)
     await ctx.send(embed=out)
-
+########################################################################################################################
+@bot.command()
+async def roulette(ctx, bet):
+    out = discord.Embed(color=0xff0000)
+    try:
+        c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
+        user = c.fetchone()
+        oldpoints = user[6]
+        num = random.choice([0, 1])
+        if(bet == 'all'):
+            if(num == 0):
+                c.execute('UPDATE users SET points=0 WHERE id=%s', (ctx.message.author.id))
+                embed = discord.Embed(title=f"{ctx.message.mention} Lost {oldpoints} and now has 0 points <:NotLikeThis:791431758024802336>")
+                await ctx.send(embed=out)
+            elif(num==1):
+                newpoints= oldpoints * 2
+                c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
+                c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
+                user1 = c.fetchone()
+                embed = discord.Embed(title=f"{ctx.message.mention} Won {newpoints} and now has {user1[6]} points! <:EZ:788447395805265990>")
+                await ctx.send(embed=out)
+        if(bet >= oldpoints):
+            if(num == 0):
+                newpoints = oldpoints - bet
+                c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
+                embed = discord.Embed(title=f"{ctx.message.mention} Lost {bet} and now has 0 points <:NotLikeThis:791431758024802336>")
+                await ctx.send(embed=out)
+            elif(num==1):
+                newpoints= oldpoints * 2
+                c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
+                c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
+                user1 = c.fetchone()
+                embed = discord.Embed(title=f"{ctx.message.mention} Won {newpoints} and now has {user1[6]} points! <:EZ:788447395805265990>")
+                await ctx.send(embed=out)
+    except:
+        await ctx.send("Invalid Argument")
 
 ########################################################################################################################
 @bot.command()
@@ -355,6 +390,8 @@ async def help(ctx):
     out.add_field(name="s!choose option1 option2 ...", value="Randomly chooses one of the given options.", inline=False)
     out.add_field(name="s!highlow", value="Play a game of higher or lower.", inline=False)
     out.add_field(name="s!times", value="Gives current time in multiple timezones.", inline=False)
+    out.add_field(name="s!roulette all/bet", value="Gambles however points you have with a 50% chance.", inLine=False)
+    out.add_field(name="s!rank", value="Checks your level and points.", inLine=False)
     await ctx.send(embed=out)
 
 
