@@ -344,7 +344,7 @@ async def times(ctx):
 ########################################################################################################################
 @bot.command()
 async def roulette(ctx, bet):
-    #try:
+    #try:await ctx.send("Invalid Argument")
     c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
     user = c.fetchone()
     oldpoints = user[6]
@@ -352,39 +352,25 @@ async def roulette(ctx, bet):
     if(bet == "all"):
         if(num == 0):
             c.execute('UPDATE users SET points=%s WHERE id=%s', (0,ctx.message.author.id))
-            out = discord.Embed(color=0xff0000)
-            out.add_field(name=f"{ctx.message.author.mention} Lost {oldpoints} and now has 0 points <:NotLikeThis:791431758024802336>", value='\u200b')
-            await ctx.send(embed=out)
+            await ctx.send(f"{ctx.message.author.mention} Lost {oldpoints} and now has 0 points <:NotLikeThis:791431758024802336>")
         elif(num==1):
             newpoints= oldpoints * 2
             c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
             c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
             user1 = c.fetchone()
-            out = discord.Embed(color=0xff0000)
-            out.add_field(
-                name=f"{ctx.message.author.mention} Won {oldpoints} and now has {user1[6]} points! <:EZ:788447395805265990>",
-                value='\u200b')
-            await ctx.send(embed=out)
+            await ctx.send(f"{ctx.message.author.mention} Won {oldpoints} and now has {user1[6]} points! <:EZ:788447395805265990>")
 
     elif(int(bet) <= oldpoints):
         if(num == 0):
             newpoints = oldpoints - bet
             c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
-            out = discord.Embed(title=f"{ctx.message.author.mention} Lost {bet} and now has 0 points <:NotLikeThis:791431758024802336>", color=0xff0000)
-            out.add_field(
-                name=f"{ctx.message.author.mention} Lost {bet} and now has 0 points <:NotLikeThis:791431758024802336>",
-                value='\u200b')
-            await ctx.send(embed=out)
+            await ctx.send(f"{ctx.message.author.mention} Lost {bet} and now has 0 points <:NotLikeThis:791431758024802336>")
         elif(num==1):
             newpoints= oldpoints * 2
             c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
             c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
             user1 = c.fetchone()
-            out = discord.Embed(color=0xff0000)
-            out.add_field(
-                name=f"{ctx.message.author.mention} Won {bet} and now has {user1[6]} points! <:EZ:788447395805265990>",
-                value='\u200b')
-            await ctx.send(embed=out)
+            await ctx.send(f"{ctx.message.author.mention} Won {bet} and now has {user1[6]} points! <:EZ:788447395805265990>")
     else:
         out = discord.Embed(title="You betted more points than you own", color=0xff0000)
         await ctx.send(embed=out)
