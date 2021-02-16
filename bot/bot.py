@@ -57,6 +57,7 @@ async def rank(ctx):
     out.add_field(name='Level', value=user[2])
     out.add_field(name='EXP', value='{}/{}'.format(user[3], threshold(user[2])))
     out.add_field(name='Total EXP', value=user[4])
+    out.add_field(name='Points', value=user[6])
     await ctx.send(embed=out)
 
 ########################################################################################################################
@@ -296,7 +297,8 @@ async def on_message(message):
         addedexp = random.randint(10, 25)
         exp = user[3] + addedexp
         rawexp = user[4] + addedexp
-        c.execute("UPDATE users SET exp=%s, rawexp=%s, name=%s, time=%s WHERE id=%s", (exp, rawexp, message.author.name, time.time(), message.author.id))
+        points = user[6] + addedexp
+        c.execute("UPDATE users SET exp=%s, rawexp=%s, name=%s, time=%s, points=%s WHERE id=%s", (exp, rawexp, message.author.name, time.time(), points, message.author.id))
 
 
         if (exp > threshold(user[2])):
