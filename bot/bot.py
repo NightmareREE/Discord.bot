@@ -67,7 +67,7 @@ async def leaderboard(ctx):
     c.execute('SELECT 1 + count(*) AS rank FROM users WHERE points > (SELECT points FROM users WHERE id=%s)',
               (ctx.message.author.id,))
     rank = c.fetchone()
-    c.execute('SELECT points, id FROM users ORDER BY points AS members')
+    c.execute('SELECT points, id FROM users AS members ORDER BY points')
     users = c.fetchone
     out = discord.Embed(title='Points Leaderboard', color=0xff0000)
     for user in users:
