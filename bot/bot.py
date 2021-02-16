@@ -38,7 +38,6 @@ def threshold(n):
 
 
 @bot.command(pass_context=True)
-@bot.command(pass_context=True)
 async def rank(ctx):
     try:
         _, member = (ctx.message.content).split(' ', 1)
