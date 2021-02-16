@@ -362,11 +362,11 @@ async def roulette(ctx, bet):
 
     elif(int(bet) <= oldpoints):
         if(num == 0):
-            newpoints = oldpoints - bet
+            newpoints = oldpoints - int(bet)
             c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
             await ctx.send(f"{ctx.message.author.mention} Lost {bet} and now has {newpoints} points <:NotLikeThis:791431758024802336>")
         elif(num==1):
-            newpoints= oldpoints + (2*bet)
+            newpoints= oldpoints + (2*int(bet))
             c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
             c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
             user1 = c.fetchone()
