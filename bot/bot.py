@@ -38,6 +38,7 @@ def threshold(n):
 
 
 @bot.command(pass_context=True)
+@bot.command(pass_context=True)
 async def rank(ctx):
     try:
         _, member = (ctx.message.content).split(' ', 1)
@@ -45,16 +46,15 @@ async def rank(ctx):
     except:
         member = ctx.message.author.id
 
-    c.execute(
-        'SELECT * FROM users AS user WHERE id=%s (SELECT count(*) FROM users AS members WHERE members.rawexp > user.rawexp AS Rank)',
-        (ctx.message.author.id,))
-    user = c.fetchone()
 
-    rank = str(user[7] + 1)
+    c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
+
+    user = c.fetchone()
+    #rank = str(user[7] + 1)
 
     out = discord.Embed(title='{}\'s Information'.format(ctx.message.author.name), color=0xff0000)
     out.set_thumbnail(url=ctx.message.author.avatar_url)
-    out.add_field(name='Rank', value='#' + rank)
+    #out.add_field(name='Rank', value='#' + rank)
     out.add_field(name='Level', value=user[2])
     out.add_field(name='EXP', value='{}/{}'.format(user[3], threshold(user[2])))
     out.add_field(name='Total EXP', value=user[4])
