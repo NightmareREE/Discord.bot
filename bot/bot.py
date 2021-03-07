@@ -18,7 +18,7 @@ DATABASE_URL = os.environ['DATABASE_URL']
 db = psycopg2.connect(DATABASE_URL, sslmode='require')
 c = db.cursor()
 
-########################################################################################################################
+#######################################################################################################################
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user.name}({bot.user.id})")
