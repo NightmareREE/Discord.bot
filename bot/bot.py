@@ -68,8 +68,7 @@ async def leaderboard(ctx):
               (ctx.message.author.id,))
     rank = c.fetchone()
     c.execute('SELECT points, id FROM users ORDER BY points DESC')
-    userss = c.fetchone
-    users = users.split()
+    users = c.fetchone
     out = discord.Embed(title='Points Leaderboard', color=0xff0000)
     for user in users:
         out.add_field(name=user, value=user)
