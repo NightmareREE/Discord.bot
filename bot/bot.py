@@ -79,7 +79,7 @@ async def leaderboard(ctx):
 @bot.command()
 async def daily(ctx):
     c.execute('SELECT time, points FROM users WHERE id=%s', (ctx.message.author.id,))
-    user = c.fetchall()
+    user = c.fetchone()
     oldpoints = user[1]
     if (time.time() - user[0]) > 86400:
         newpoints = oldpoints + 1000
