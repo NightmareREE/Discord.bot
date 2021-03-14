@@ -73,7 +73,7 @@ async def leaderboard(ctx):
     for user in users:
         out.add_field(name=user[0], value=user[1])
     out.set_footer(text=f"Your Rank is {rank}")
-    await ctx.send(users)
+    await ctx.send(embed=out)
 
 ########################################################################################################################
 @bot.event
