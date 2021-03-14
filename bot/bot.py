@@ -76,6 +76,18 @@ async def leaderboard(ctx):
     await ctx.send(embed=out)
 
 ########################################################################################################################
+@bot.command()
+async def daily(ctx):
+    c.execute('SELECT points, time FROM users WHERE id=%s)',(ctx.message.author.id,))
+    user = c.fetchall()
+    oldpoints = user[0]
+    if (time.time() - user[1]) > 86400:
+        newpoints = oldpoints + 1000
+        c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
+        await ctx.send(f"{ctx.message.author.mention} redeemed the daily bonus and won 1000 and now has {newpoints} points <:EZ:788447395805265990>")
+    else:
+        await ctx.send("You cant use this yet!")
+########################################################################################################################
 @bot.event
 async def on_message_delete(message):
     lastdel[message.channel] = message
