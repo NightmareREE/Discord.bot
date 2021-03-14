@@ -72,7 +72,7 @@ async def leaderboard(ctx):
     out = discord.Embed(title='Points Leaderboard', color=0xff0000)
     for user in users:
         out.add_field(name=user[0], value=user[1], inline=False)
-    out.set_footer(text="Your Rank is #"+str(rank))
+    out.set_footer(text="Your Rank is #"+str(rank[0]))
     await ctx.send(embed=out)
 
 ########################################################################################################################
