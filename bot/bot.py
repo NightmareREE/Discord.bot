@@ -78,10 +78,10 @@ async def leaderboard(ctx):
 ########################################################################################################################
 @bot.command()
 async def daily(ctx):
-    c.execute('SELECT time, points FROM users WHERE id=%s', (ctx.message.author.id,))
+    c.execute('SELECT points, time FROM users WHERE id=%s', (ctx.message.author.id,))
     user = c.fetchone()
-    oldpoints = user[1]
-    if (time.time() - user[0]) > 86400:
+    oldpoints = user[0]
+    if (time.time() - user[1]) > 86400:
         newpoints = oldpoints + 1000
         c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
         await ctx.send(f"{ctx.message.author.mention} redeemed the daily bonus and won 1000 and now has {newpoints} points <:EZ:788447395805265990>")
