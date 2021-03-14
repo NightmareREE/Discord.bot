@@ -89,7 +89,7 @@ async def daily(ctx):
 @bot.event
 async def on_command_error(error, ctx):
     if isinstance(error, commands.CommandOnCooldown):
-        await ctx.send('This command is on a %.2fs cooldown' % error.retry_after)
+        await ctx.send("This command is on a cooldown")
 ########################################################################################################################
 @bot.event
 async def on_message_delete(message):
