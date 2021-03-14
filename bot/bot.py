@@ -85,11 +85,11 @@ async def daily(ctx):
     newpoints = oldpoints + 1000
     c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
     await ctx.send(f"{ctx.message.author.mention} redeemed the daily bonus and won 1000 and now has {newpoints} points <:EZ:788447395805265990>")
-    
+
 @bot.event
 async def on_command_error(error, ctx):
     if isinstance(error, commands.CommandOnCooldown):
-        await bot.send_message(ctx.message.channel, content='This command is on a %.2fs cooldown' % error.retry_after)
+        await ctx.send('This command is on a %.2fs cooldown' % error.retry_after)
 ########################################################################################################################
 @bot.event
 async def on_message_delete(message):
