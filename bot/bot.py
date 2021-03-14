@@ -86,7 +86,7 @@ async def daily(ctx):
         newpoints = oldpoints + 1000
         c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
         await ctx.send(f"{ctx.message.author.mention} redeemed the daily bonus and won 1000 and now has {newpoints} points <:EZ:788447395805265990>")
-    except Exception as e:
+    except CommandOnCooldown as e:
         await ctx.send(str(e))
 ########################################################################################################################
 @bot.event
