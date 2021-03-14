@@ -79,15 +79,18 @@ async def leaderboard(ctx):
 @bot.command()
 @commands.cooldown(1, 86400, commands.BucketType.user)
 async def daily(ctx):
-    try:
-        c.execute('SELECT points FROM users WHERE id=%s', (ctx.message.author.id,))
-        user = c.fetchone()
-        oldpoints = user[0]
-        newpoints = oldpoints + 1000
-        c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
-        await ctx.send(f"{ctx.message.author.mention} redeemed the daily bonus and won 1000 and now has {newpoints} points <:EZ:788447395805265990>")
-    except CommandOnCooldown as e:
-        await ctx.send(str(e))
+    c.execute('SELECT points FROM users WHERE id=%s', (ctx.message.author.id,))
+    user = c.fetchone()
+    oldpoints = user[0]
+    newpoints = oldpoints + 1000
+    c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
+    await ctx.send(f"{ctx.message.author.mention} redeemed the daily bonus and won 1000 and now has {newpoints} points <:EZ:788447395805265990>")
+    
+@bot.event
+async def on_command_error(error, ctx):
+    if isinstance(error, commands.CommandOnCooldown):
+        await bot.send_message(ctx.message.channel, content='This command is on a %.2fs cooldown' % error.retry_after)
+    raise error
 ########################################################################################################################
 @bot.event
 async def on_message_delete(message):
