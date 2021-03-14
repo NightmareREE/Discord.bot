@@ -73,7 +73,7 @@ async def leaderboard(ctx):
     print (users)
         #out.add_field(name=user, value=user)
     out.set_footer(text=f"Your Rank is {rank}")
-    await ctx.send(out)
+    await ctx.send(users)
 ########################################################################################################################
 @bot.event
 async def on_message_delete(message):
