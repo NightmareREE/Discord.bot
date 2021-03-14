@@ -84,9 +84,10 @@ async def daily(ctx):
     if (time.time() - user[1]) > 86400:
         newpoints = oldpoints + 1000
         c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
-        await ctx.send(f"{ctx.message.author.mention} redeemed the daily bonus and won 1000 and now has {newpoints} points <:EZ:788447395805265990>")
+        #await ctx.send(f"{ctx.message.author.mention} redeemed the daily bonus and won 1000 and now has {newpoints} points <:EZ:788447395805265990>")
     else:
-        await ctx.send("You cant use this yet!")
+        #await ctx.send("You cant use this yet!")
+    await.ctx.send(user)
 ########################################################################################################################
 @bot.event
 async def on_message_delete(message):
