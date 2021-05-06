@@ -317,7 +317,7 @@ async def on_message(message):
         return
 
     if message.author.name != user[1]:
-        c.execute('UPDATE users SET name = %s WHERE id= %d'% message.author.name, message.author.id)
+        c.execute('UPDATE users SET name = %s WHERE id= %s'% message.author.name, message.author.id)
 
     if (time.time() - user[5]) > 60:
         addedexp = random.randint(10, 25)
