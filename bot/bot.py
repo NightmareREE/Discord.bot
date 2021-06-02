@@ -453,6 +453,16 @@ async def reset(ctx, user: User):
             await ctx.send("You cannot use this command")
     except:
         await ctx.send("Wrong Command Idiot")
+@bot.command()
+async def resetall(ctx):
+    try:
+        if(ctx.message.author.id == 429160568973426691):
+            c.execute('UPDATE users SET points=1000')
+            await ctx.send("all users have been reset to 1000 points")
+        else:
+            await ctx.send("You cannot use this command")
+    except:
+        await ctx.send("Wrong Command Idiot")
 ########################################################################################################################
 @bot.command()
 async def give(ctx, arg: User, money):
