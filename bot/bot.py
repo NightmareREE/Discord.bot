@@ -406,7 +406,7 @@ async def roulette(ctx, bet):
                 points = oldpoints * s1
                 if int(points) <= 0:
                     await ctx.send("Nice try")
-                if (num == 0):
+                elif (num == 0):
                     newpoints = oldpoints - int(points)
                     c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
                     await ctx.send(
