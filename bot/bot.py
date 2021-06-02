@@ -444,7 +444,7 @@ async def give(ctx, arg: User, money):
         c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
         user = c.fetchone()
         oldpoints = user[6]
-        if(oldpoints < money):
+        if(oldpoints < int(money)):
             await ctx.send(f"{ctx.message.author.mention} You dont have enough money you broke ass")
         else:
             c.execute('UPDATE users SET points= points - %s WHERE id=%s', (money, giver))
