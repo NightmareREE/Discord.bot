@@ -33,7 +33,8 @@ async def on_ready():
     ##
     create_table_query = 'CREATE TABLE IF NOT EXISTS users(id bigint PRIMARY KEY, name TEXT, level INT, exp INTEGER, rawexp INTEGER, time REAL, points INTEGER)'
     c.execute(create_table_query)
-    create_table_query = 'CREATE TABLE IF NOT EXISTS bets(id bigint PRIMARY KEY, name TEXT, bet INTEGER, result TEXT)'
+    #create_table_query = 'CREATE TABLE IF NOT EXISTS bets(id bigint PRIMARY KEY, name TEXT, bet INTEGER, result TEXT)'
+    create_table_query = 'DROP TABLE bets'
     c.execute(create_table_query)
     db.commit()
 
