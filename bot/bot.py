@@ -457,23 +457,25 @@ async def reset(ctx, user: User):
 @bot.command()
 async def give(ctx, arg: User, money):
     try:
-        giver = ctx.message.author.id
-        taker = arg.id
-        if(giver != taker):
-            c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
-            user = c.fetchone()
-            oldpoints = user[6]
-            if(oldpoints < int(money)):
-                await ctx.send(f"{ctx.message.author.mention} You dont have enough money you broke ass")
+        if (int(money) > 0):
+            giver = ctx.message.author.id
+            taker = arg.id
+            if(giver != taker):
+                c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
+                user = c.fetchone()
+                oldpoints = user[6]
+                if(oldpoints < int(money)):
+                    await ctx.send(f"{ctx.message.author.mention} You dont have enough money you broke ass")
+                else:
+                    c.execute('UPDATE users SET points= points - %s WHERE id=%s', (money, giver))
+                    c.execute('UPDATE users SET points= points + %s WHERE id=%s', (money, taker))
+                    await ctx.send(f"{ctx.message.author.mention} Gave {arg.mention} {money} Points!")
             else:
-                c.execute('UPDATE users SET points= points - %s WHERE id=%s', (money, giver))
-                c.execute('UPDATE users SET points= points + %s WHERE id=%s', (money, taker))
-                await ctx.send(f"{ctx.message.author.mention} Gave {arg.mention} {money} Points!")
+                await ctx.send(f"{ctx.message.author.mention} Why do you want to give yourself money?")
         else:
-            await ctx.send(f"{ctx.message.author.mention} Why do you want to give yourself money?")
+            await ctx.send("Nice try")
     except:
         await ctx.send(f"{ctx.message.author.mention} Wrong command idiot")
-
 
 ########################################################################################################################
 @bot.command()
