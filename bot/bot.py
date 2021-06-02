@@ -33,6 +33,8 @@ async def on_ready():
     ##
     create_table_query = 'CREATE TABLE IF NOT EXISTS users(id bigint PRIMARY KEY, name TEXT, level INT, exp INTEGER, rawexp INTEGER, time REAL, points INTEGER)'
     c.execute(create_table_query)
+    create_table_query = 'CREATE TABLE IF NOT EXISTS bets(id bigint PRIMARY KEY, name TEXT, bet INTEGER, result TEXT)'
+    c.execute(create_table_query)
     db.commit()
 
 
@@ -390,12 +392,14 @@ async def roulette(ctx, bet):
                 await ctx.send(embed=out)
             elif (num == 0):
                 c.execute('UPDATE users SET points=%s WHERE id=%s', (0, ctx.message.author.id))
+                c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, oldpoints, "lost",))
                 await ctx.send(
                     f"{ctx.message.author.mention} Lost {oldpoints} and now has 0 points <:NotLikeThis:791431758024802336>")
             elif (num == 1):
                 newpoints = oldpoints * 2
                 c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
                 c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
+                c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, oldpoints, "won",))
                 user1 = c.fetchone()
                 await ctx.send(
                     f"{ctx.message.author.mention} Won {oldpoints} and now has {user1[6]} points! <:EZ:788447395805265990>")
@@ -409,11 +413,15 @@ async def roulette(ctx, bet):
                 elif (num == 0):
                     newpoints = oldpoints - int(points)
                     c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
+                    c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',
+                              (ctx.message.author.id, ctx.message.author.name, points, "lost",))
                     await ctx.send(
                         f"{ctx.message.author.mention} Lost {int(points)} and now has {newpoints} points <:NotLikeThis:791431758024802336>")
                 elif (num == 1):
                     newpoints = oldpoints + int(points)
                     c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
+                    c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',
+                              (ctx.message.author.id, ctx.message.author.name, points, "won",))
                     c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
                     user1 = c.fetchone()
                     await ctx.send(
@@ -427,11 +435,13 @@ async def roulette(ctx, bet):
             if (num == 0):
                 newpoints = oldpoints - int(bet)
                 c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
+                c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, int(bet), "lost",))
                 await ctx.send(
                     f"{ctx.message.author.mention} Lost {bet} and now has {newpoints} points <:NotLikeThis:791431758024802336>")
             elif (num == 1):
                 newpoints = oldpoints + int(bet)
                 c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
+                c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, int(bet), "won",))
                 c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
                 user1 = c.fetchone()
                 await ctx.send(
