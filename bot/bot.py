@@ -397,6 +397,25 @@ async def roulette(ctx, bet):
                 user1 = c.fetchone()
                 await ctx.send(
                     f"{ctx.message.author.mention} Won {oldpoints} and now has {user1[6]} points! <:EZ:788447395805265990>")
+        elif ch in bet:
+            s = bet.replace("%", "")
+            if int(s) < 100:
+                s1 = int(s) * 0.01
+                points = 1000 * s1
+                if (num == 0):
+                    newpoints = oldpoints - int(points)
+                    c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
+                    await ctx.send(
+                        f"{ctx.message.author.mention} Lost {points} and now has {newpoints} points <:NotLikeThis:791431758024802336>")
+                elif (num == 1):
+                    newpoints = oldpoints + int(points)
+                    c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
+                    c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
+                    user1 = c.fetchone()
+                    await ctx.send(
+                        f"{ctx.message.author.mention} Won {points} and now has {user1[6]} points! <:EZ:788447395805265990>")
+            else:
+                await ctx.send(f"{ctx.message.author.mention} you cant bet higher than 100%")
         elif (int(bet) == 0):
             out = discord.Embed(title="You cant bet 0 idiot!", color=0xff0000)
             await ctx.send(embed=out)
