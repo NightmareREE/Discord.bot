@@ -383,7 +383,7 @@ async def roulette(ctx, bet):
         oldpoints = user[6]
         num = random.choice([0, 1])
         ch = '%'
-    
+
         if (bet == "all"):
             if (oldpoints == 0):
                 out = discord.Embed(title="You cant bet 0 idiot!", color=0xff0000)
@@ -404,6 +404,8 @@ async def roulette(ctx, bet):
             if int(s) < 100:
                 s1 = int(s) * 0.01
                 points = oldpoints * s1
+                if int(points) <= 0:
+                    await ctx.send("Nice try")
                 if (num == 0):
                     newpoints = oldpoints - int(points)
                     c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
@@ -439,6 +441,18 @@ async def roulette(ctx, bet):
             await ctx.send(embed=out)
     except:
         await ctx.send("Wrong command idiot")
+
+
+@bot.command()
+async def reset(ctx, user: User):
+    try:
+        if(ctx.message.author.id == 429160568973426691):
+            c.execute('UPDATE users SET points=1000 WHERE id=%s', (user.id,))
+            await ctx.send(f"{user.mention} has been reset to 1000 points")
+        else:
+            await ctx.send("You cannot use this command")
+    except:
+        await ctx.send("Wrong Command Idiot")
 ########################################################################################################################
 @bot.command()
 async def give(ctx, arg: User, money):
@@ -459,6 +473,7 @@ async def give(ctx, arg: User, money):
             await ctx.send(f"{ctx.message.author.mention} Why do you want to give yourself money?")
     except:
         await ctx.send(f"{ctx.message.author.mention} Wrong command idiot")
+
 
 ########################################################################################################################
 @bot.command()
