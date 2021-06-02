@@ -401,11 +401,11 @@ async def roulette(ctx, bet):
                     f"{ctx.message.author.mention} Won {oldpoints} and now has {user1[6]} points! <:EZ:788447395805265990>")
         elif ch in bet:
             s = bet.replace("%", "")
-            if int(s) < 100:
+            if int(s) < 100 and int(s) > 0:
                 s1 = int(s) * 0.01
                 points = oldpoints * s1
                 if int(points) <= 0:
-                    await ctx.send("Nice try")
+                    await ctx.send("Wrong command")
                 elif (num == 0):
                     newpoints = oldpoints - int(points)
                     c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
