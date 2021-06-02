@@ -2,11 +2,14 @@ import random
 import time
 import discord
 from discord.ext import commands
+from discord import User
 from datetime import datetime
 import os
 import re
 import pytz
 import psycopg2
+
+
 
 bot = commands.Bot(command_prefix="s!", intents=discord.Intents.all())
 bot.remove_command('help')
@@ -17,6 +20,7 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 DATABASE_URL = os.environ['DATABASE_URL']
 db = psycopg2.connect(DATABASE_URL, sslmode='require')
 c = db.cursor()
+
 
 #######################################################################################################################
 @bot.event
@@ -30,6 +34,7 @@ async def on_ready():
     create_table_query = 'CREATE TABLE IF NOT EXISTS users(id bigint PRIMARY KEY, name TEXT, level INT, exp INTEGER, rawexp INTEGER, time REAL, points INTEGER)'
     c.execute(create_table_query)
     db.commit()
+
 
 ########################################################################################################################
 def threshold(n):
@@ -45,21 +50,22 @@ async def rank(ctx):
     except:
         member = ctx.message.author.id
 
-
     c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
     user = c.fetchone()
 
-    #c.execute('SELECT 1 + count(*) AS rank FROM users WHERE rawexp > (SELECT rawexp FROM users WHERE id=%s)', (ctx.message.author.id,))
-    c.execute('SELECT 1 + count(*) AS rank FROM users WHERE points > (SELECT points FROM users WHERE id=%s)', (ctx.message.author.id,))
+    # c.execute('SELECT 1 + count(*) AS rank FROM users WHERE rawexp > (SELECT rawexp FROM users WHERE id=%s)', (ctx.message.author.id,))
+    c.execute('SELECT 1 + count(*) AS rank FROM users WHERE points > (SELECT points FROM users WHERE id=%s)',
+              (ctx.message.author.id,))
     rank = c.fetchone()
     out = discord.Embed(title='{}\'s Information'.format(ctx.message.author.name), color=0xff0000)
     out.set_thumbnail(url=ctx.message.author.avatar_url)
     out.add_field(name='Rank', value='#' + str(rank[0]))
-    #out.add_field(name='Level', value=user[2])
-    #out.add_field(name='EXP', value='{}/{}'.format(user[3], threshold(user[2])))
-    #out.add_field(name='Total EXP', value=user[4])
+    # out.add_field(name='Level', value=user[2])
+    # out.add_field(name='EXP', value='{}/{}'.format(user[3], threshold(user[2])))
+    # out.add_field(name='Total EXP', value=user[4])
     out.add_field(name='Points', value=user[6])
     await ctx.send(embed=out)
+
 
 ########################################################################################################################
 @bot.command(pass_context=True)
@@ -72,20 +78,23 @@ async def leaderboard(ctx):
     out = discord.Embed(title='Points Leaderboard', color=0xff0000)
     for user in users:
         out.add_field(name=user[0], value=user[1], inline=False)
-    out.set_footer(text="Your Rank is #"+str(rank[0]))
+    out.set_footer(text="Your Rank is #" + str(rank[0]))
     await ctx.send(embed=out)
+
 
 ########################################################################################################################
 @bot.command()
 @commands.cooldown(1, 86400, commands.BucketType.user)
 async def daily(ctx):
- 
     c.execute('SELECT points FROM users WHERE id=%s', (ctx.message.author.id,))
     user = c.fetchone()
     oldpoints = user[0]
     newpoints = oldpoints + 1000
     c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
-    await ctx.send(f"{ctx.message.author.mention} redeemed the daily bonus and won 1000 and now has {newpoints} points <:EZ:788447395805265990>")
+    await ctx.send(
+        f"{ctx.message.author.mention} redeemed the daily bonus and won 1000 and now has {newpoints} points <:EZ:788447395805265990>")
+
+
 ########################################################################################################################
 @bot.event
 async def on_message_delete(message):
@@ -114,7 +123,6 @@ async def unedit(ctx):
 
 
 ########################################################################################################################
-
 @bot.command()
 async def ping(ctx):
     ping = "<@429160568973426691>"
@@ -147,8 +155,6 @@ async def ching(ctx):
         await ctx.send("<@490176293372166148> nerd")
     else:
         await ctx.send("<@490176293372166148> bu")
-
-
 
 
 ########################################################################################################################
@@ -191,7 +197,6 @@ async def highlow(ctx):
         elif (guess == num):
             out.add_field(name="We rolled the same number!", value='\u200b')
         await ctx.send(embed=out)
-
 
     @bot.command()
     async def lower(ctx):
@@ -324,14 +329,14 @@ async def on_message(message):
         exp = user[3] + addedexp
         rawexp = user[4] + addedexp
         points = user[6] + addedexp
-        c.execute("UPDATE users SET exp=%s, rawexp=%s, name=%s, time=%s, points=%s WHERE id=%s", (exp, rawexp, message.author.name, time.time(), points, message.author.id))
-
+        c.execute("UPDATE users SET exp=%s, rawexp=%s, name=%s, time=%s, points=%s WHERE id=%s",
+                  (exp, rawexp, message.author.name, time.time(), points, message.author.id))
 
         if (exp > threshold(user[2])):
             level = user[2] + 1
             c.execute("UPDATE users SET exp=%s, level=%s WHERE id=%s", (0, level, message.author.id))
-            #await message.channel.send(f"{message.author.mention} Pog! You leveled up! You're now level {level}")
-            #** {} **.'.format(level)
+            # await message.channel.send(f"{message.author.mention} Pog! You leveled up! You're now level {level}")
+            # ** {} **.'.format(level)
     db.commit()
 
     await bot.process_commands(message)
@@ -367,6 +372,8 @@ async def times(ctx):
 
     # out.add_field(name = current_time, value = ".", inline = True)
     await ctx.send(embed=out)
+
+
 ########################################################################################################################
 @bot.command()
 async def roulette(ctx, bet):
@@ -375,39 +382,62 @@ async def roulette(ctx, bet):
         user = c.fetchone()
         oldpoints = user[6]
         num = random.choice([0, 1])
-        if(bet == "all"):
-            if(oldpoints ==0):
+        if (bet == "all"):
+            if (oldpoints == 0):
                 out = discord.Embed(title="You cant bet 0 idiot!", color=0xff0000)
                 await ctx.send(embed=out)
-            elif(num == 0):
-                c.execute('UPDATE users SET points=%s WHERE id=%s', (0,ctx.message.author.id))
-                await ctx.send(f"{ctx.message.author.mention} Lost {oldpoints} and now has 0 points <:NotLikeThis:791431758024802336>")
-            elif(num==1):
-                newpoints= oldpoints * 2
+            elif (num == 0):
+                c.execute('UPDATE users SET points=%s WHERE id=%s', (0, ctx.message.author.id))
+                await ctx.send(
+                    f"{ctx.message.author.mention} Lost {oldpoints} and now has 0 points <:NotLikeThis:791431758024802336>")
+            elif (num == 1):
+                newpoints = oldpoints * 2
                 c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
                 c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
                 user1 = c.fetchone()
-                await ctx.send(f"{ctx.message.author.mention} Won {oldpoints} and now has {user1[6]} points! <:EZ:788447395805265990>")
-        elif(int(bet)==0):
+                await ctx.send(
+                    f"{ctx.message.author.mention} Won {oldpoints} and now has {user1[6]} points! <:EZ:788447395805265990>")
+        elif (int(bet) == 0):
             out = discord.Embed(title="You cant bet 0 idiot!", color=0xff0000)
             await ctx.send(embed=out)
-        elif(int(bet) <= oldpoints):
-            if(num == 0):
+        elif (int(bet) <= oldpoints):
+            if (num == 0):
                 newpoints = oldpoints - int(bet)
                 c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
-                await ctx.send(f"{ctx.message.author.mention} Lost {bet} and now has {newpoints} points <:NotLikeThis:791431758024802336>")
-            elif(num==1):
-                newpoints= oldpoints + int(bet)
+                await ctx.send(
+                    f"{ctx.message.author.mention} Lost {bet} and now has {newpoints} points <:NotLikeThis:791431758024802336>")
+            elif (num == 1):
+                newpoints = oldpoints + int(bet)
                 c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
                 c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
                 user1 = c.fetchone()
-                await ctx.send(f"{ctx.message.author.mention} Won {bet} and now has {user1[6]} points! <:EZ:788447395805265990>")
+                await ctx.send(
+                    f"{ctx.message.author.mention} Won {bet} and now has {user1[6]} points! <:EZ:788447395805265990>")
         else:
             out = discord.Embed(title="You betted more points than you own", color=0xff0000)
             await ctx.send(embed=out)
 
     except:
         await ctx.send("Wrong Command Idiot")
+
+########################################################################################################################
+@bot.command()
+async def give(ctx, arg: User, money):
+    try:
+        giver = ctx.message.author.id
+        taker = arg.id
+        if(giver != taker):
+            oldpoints = c.execute('SELECT points FROM users WHERE id=%s', (giver))
+            if(oldpoints < money):
+                await ctx.send(f"{ctx.message.author.mention} You dont have enough money you broke ass")
+            else:
+                c.execute('UPDATE users SET points= points - %s WHERE id=%s', (money, giver))
+                c.execute('UPDATE users SET points= points + %s WHERE id=%s', (money, taker))
+                await ctx.send(f"{ctx.message.author.mention} Gave {arg.mention} {money} Points!")
+        else:
+            await ctx.send(f"{ctx.message.author.mention} Why do you want to give yourself money?")
+    except:
+        await ctx.send(f"{ctx.message.author.mention} Wrong command idiot")
 
 ########################################################################################################################
 @bot.command()
@@ -419,9 +449,10 @@ async def help(ctx):
     out.add_field(name="s!unedit", value="Displays the last edited message as before it was edited.", inline=False)
     out.add_field(name="s!poll question: choice1 choice2...", value="Posts a poll with given choices.", inline=False)
     out.add_field(name="s!choose option1 option2 ...", value="Randomly chooses one of the given options.", inline=False)
-    #out.add_field(name="s!highlow", value="Play a game of higher or lower.", inline=False)
+    # out.add_field(name="s!highlow", value="Play a game of higher or lower.", inline=False)
     out.add_field(name="s!times", value="Gives current time in multiple timezones.", inline=False)
-    out.add_field(name="s!roulette all/number", value="Gambles with points you bet with a 50% chance to double it.", inline=False)
+    out.add_field(name="s!roulette all/number", value="Gambles with points you bet with a 50% chance to double it.",
+                  inline=False)
     out.add_field(name="s!rank", value="Checks your level and points.", inline=False)
     await ctx.send(embed=out)
 
