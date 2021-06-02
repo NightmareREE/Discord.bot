@@ -423,21 +423,33 @@ async def roulette(ctx, bet):
 ########################################################################################################################
 @bot.command()
 async def give(ctx, arg: User, money):
-    try:
-        giver = ctx.message.author.id
-        taker = arg.id
-        if(giver != taker):
-            oldpoints = c.execute('SELECT points FROM users WHERE id=%s', (giver))
-            if(oldpoints < money):
-                await ctx.send(f"{ctx.message.author.mention} You dont have enough money you broke ass")
-            else:
-                c.execute('UPDATE users SET points= points - %s WHERE id=%s', (money, giver))
-                c.execute('UPDATE users SET points= points + %s WHERE id=%s', (money, taker))
-                await ctx.send(f"{ctx.message.author.mention} Gave {arg.mention} {money} Points!")
+#    try:
+#        giver = ctx.message.author.id
+#        taker = arg.id
+#        if(giver != taker):
+#            oldpoints = c.execute('SELECT points FROM users WHERE id=%s', (giver))
+#            if(oldpoints < money):
+#                await ctx.send(f"{ctx.message.author.mention} You dont have enough money you broke ass")
+#            else:
+#                c.execute('UPDATE users SET points= points - %s WHERE id=%s', (money, giver))
+#                c.execute('UPDATE users SET points= points + %s WHERE id=%s', (money, taker))
+#                await ctx.send(f"{ctx.message.author.mention} Gave {arg.mention} {money} Points!")
+#        else:
+#            await ctx.send(f"{ctx.message.author.mention} Why do you want to give yourself money?")
+#    except:
+#        await ctx.send(f"{ctx.message.author.mention} Wrong command idiot")
+    giver = ctx.message.author.id
+    taker = arg.id
+    if(giver != taker):
+        oldpoints = c.execute('SELECT points FROM users WHERE id=%s', (giver))
+        if(oldpoints < money):
+            await ctx.send(f"{ctx.message.author.mention} You dont have enough money you broke ass")
         else:
-            await ctx.send(f"{ctx.message.author.mention} Why do you want to give yourself money?")
-    except:
-        await ctx.send(f"{ctx.message.author.mention} Wrong command idiot")
+            c.execute('UPDATE users SET points= points - %s WHERE id=%s', (money, giver))
+            c.execute('UPDATE users SET points= points + %s WHERE id=%s', (money, taker))
+            await ctx.send(f"{ctx.message.author.mention} Gave {arg.mention} {money} Points!")
+    else:
+        await ctx.send(f"{ctx.message.author.mention} Why do you want to give yourself money?")
 
 ########################################################################################################################
 @bot.command()
