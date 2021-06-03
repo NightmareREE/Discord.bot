@@ -455,18 +455,23 @@ async def roulette(ctx, bet):
 
 @bot.command()
 async def stats(ctx):
-    c.execute('SELECT count(*) FROM bets WHERE id=%s', (ctx.message.author.id,))
-    user = c.fetchone()
-    totalbets  = user[0]
-    c.execute('SELECT count(*) FROM bets WHERE id=%s AND result = %s', (ctx.message.author.id,"won",))
-    user = c.fetchone()
-    totalwins  = user[0]
-    c.execute('SELECT count(*) FROM bets WHERE id=%s AND result = %s', (ctx.message.author.id, "lost",))
-    user = c.fetchone()
-    totalloss  = user[0]
-    await ctx.send(totalbets)
-    await ctx.send(totalwins)
-    await ctx.send(totalloss)
+    try:
+        c.execute('SELECT count(*) FROM bets WHERE id=%s', (ctx.message.author.id,))
+        user = c.fetchone()
+        totalbets = user[0]
+        c.execute('SELECT count(*) FROM bets WHERE id=%s AND result = %s', (ctx.message.author.id,"won",))
+        user = c.fetchone()
+        totalwins = user[0]
+        c.execute('SELECT count(*) FROM bets WHERE id=%s AND result = %s', (ctx.message.author.id,"lost",))
+        user = c.fetchone()
+        totalloss = user[0]
+        out = discord.Embed(title=f"{ctx.message.author.name}", color=0xff0000)
+        out.add_field(name="Total amount of bets: ", value=totalbets, inline=True)
+        out.add_field(name="# of Won bets: ", value=totalwins, inline=True)
+        out.add_field(name="# of Lost bets: ", value=totalloss, inline=True)
+        await ctx.send(embed=out)
+    except:
+        await ctx.send("You have made no bets")
 
         
         
