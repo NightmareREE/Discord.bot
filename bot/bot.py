@@ -377,79 +377,81 @@ async def times(ctx):
 
 
 ########################################################################################################################
+
 @bot.command()
 async def roulette(ctx, bet):
-    c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
-    user = c.fetchone()
-    oldpoints = user[6]
-    num = random.choice([0, 1])
-    ch = '%'
-
-    if (bet == "all"):
-        if (oldpoints == 0):
+    try:
+        c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
+        user = c.fetchone()
+        oldpoints = user[6]
+        num = random.choice([0, 1])
+        ch = '%'
+    
+        if (bet == "all"):
+            if (oldpoints == 0):
+                out = discord.Embed(title="You cant bet 0 idiot!", color=0xff0000)
+                await ctx.send(embed=out)
+            elif (num == 0):
+                c.execute('UPDATE users SET points=%s WHERE id=%s', (0, ctx.message.author.id))
+                c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, oldpoints, "lost",))
+                await ctx.send(
+                    f"{ctx.message.author.mention} Lost {oldpoints} and now has 0 points <:NotLikeThis:791431758024802336>")
+            elif (num == 1):
+                newpoints = oldpoints * 2
+                c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
+                c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
+                c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, oldpoints, "won",))
+                user1 = c.fetchone()
+                await ctx.send(
+                    f"{ctx.message.author.mention} Won {oldpoints} and now has {user1[6]} points! <:EZ:788447395805265990>")
+        elif ch in bet:
+            s = bet.replace("%", "")
+            if int(s) <= 100 and int(s) > 0:
+                s1 = int(s) * 0.01
+                points = oldpoints * s1
+                if int(points) <= 0:
+                    await ctx.send("Wrong command")
+                elif (num == 0):
+                    newpoints = oldpoints - int(points)
+                    c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
+                    c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',
+                              (ctx.message.author.id, ctx.message.author.name, points, "lost",))
+                    await ctx.send(
+                        f"{ctx.message.author.mention} Lost {int(points)} and now has {newpoints} points <:NotLikeThis:791431758024802336>")
+                elif (num == 1):
+                    newpoints = oldpoints + int(points)
+                    c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
+                    c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',
+                              (ctx.message.author.id, ctx.message.author.name, points, "won",))
+                    c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
+                    user1 = c.fetchone()
+                    await ctx.send(
+                        f"{ctx.message.author.mention} Won {int(points)} and now has {user1[6]} points! <:EZ:788447395805265990>")
+                else:
+                    await ctx.send(f"{ctx.message.author.mention} you cant bet higher than 100%")
+        elif (int(bet) == 0):
             out = discord.Embed(title="You cant bet 0 idiot!", color=0xff0000)
             await ctx.send(embed=out)
-        elif (num == 0):
-            c.execute('UPDATE users SET points=%s WHERE id=%s', (0, ctx.message.author.id))
-            c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, oldpoints, "lost",))
-            await ctx.send(
-                f"{ctx.message.author.mention} Lost {oldpoints} and now has 0 points <:NotLikeThis:791431758024802336>")
-        elif (num == 1):
-            newpoints = oldpoints * 2
-            c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
-            c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
-            c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, oldpoints, "won",))
-            user1 = c.fetchone()
-            await ctx.send(
-                f"{ctx.message.author.mention} Won {oldpoints} and now has {user1[6]} points! <:EZ:788447395805265990>")
-    elif ch in bet:
-        s = bet.replace("%", "")
-        if int(s) <= 100 and int(s) > 0:
-            s1 = int(s) * 0.01
-            points = oldpoints * s1
-            if int(points) <= 0:
-                await ctx.send("Wrong command")
-            elif (num == 0):
-                newpoints = oldpoints - int(points)
+        elif (int(bet) <= oldpoints):
+            if (num == 0):
+                newpoints = oldpoints - int(bet)
                 c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
-                c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',
-                          (ctx.message.author.id, ctx.message.author.name, points, "lost",))
+                c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, bet, "lost",))
                 await ctx.send(
-                    f"{ctx.message.author.mention} Lost {int(points)} and now has {newpoints} points <:NotLikeThis:791431758024802336>")
+                    f"{ctx.message.author.mention} Lost {bet} and now has {newpoints} points <:NotLikeThis:791431758024802336>")
             elif (num == 1):
-                newpoints = oldpoints + int(points)
+                newpoints = oldpoints + int(bet)
                 c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
-                c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',
-                          (ctx.message.author.id, ctx.message.author.name, points, "won",))
+                c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, bet, "won",))
                 c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
                 user1 = c.fetchone()
                 await ctx.send(
-                    f"{ctx.message.author.mention} Won {int(points)} and now has {user1[6]} points! <:EZ:788447395805265990>")
-            else:
-                await ctx.send(f"{ctx.message.author.mention} you cant bet higher than 100%")
-    elif (int(bet) == 0):
-        out = discord.Embed(title="You cant bet 0 idiot!", color=0xff0000)
-        await ctx.send(embed=out)
-    elif (int(bet) <= oldpoints):
-        if (num == 0):
-            newpoints = oldpoints - int(bet)
-            c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
-            c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, bet, "lost",))
-            await ctx.send(
-                f"{ctx.message.author.mention} Lost {bet} and now has {newpoints} points <:NotLikeThis:791431758024802336>")
-        elif (num == 1):
-            newpoints = oldpoints + int(bet)
-            c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
-            c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, bet, "won",))
-            c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
-            user1 = c.fetchone()
-            await ctx.send(
-                f"{ctx.message.author.mention} Won {bet} and now has {user1[6]} points! <:EZ:788447395805265990>")
-    else:
-        out = discord.Embed(title="You betted more points than you own", color=0xff0000)
-        await ctx.send(embed=out)
-
-
+                    f"{ctx.message.author.mention} Won {bet} and now has {user1[6]} points! <:EZ:788447395805265990>")
+        else:
+            out = discord.Embed(title="You betted more points than you own", color=0xff0000)
+            await ctx.send(embed=out)
+    except:
+        await ctx.send("Wrong command")
 
 
 
