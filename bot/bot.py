@@ -453,8 +453,23 @@ async def roulette(ctx, bet):
     except:
         await ctx.send("Wrong command")
 
+@bot.command()
+async def stats(ctx):
+    c.execute('SELECT count(*) FROM bets WHERE id=%s', (ctx.message.author.id,))
+    user = c.fetchone()
+    totalbets  = user[0]
+    c.execute('SELECT count(*) FROM bets WHERE id=%s AND result = `won`', (ctx.message.author.id,))
+    user = c.fetchone()
+    totalwins  = user[0]
+    c.execute('SELECT count(*) FROM bets WHERE id=%s AND result = `lost`', (ctx.message.author.id,))
+    user = c.fetchone()
+    totalloss  = user[0]
+    await ctx.send(totalbets)
+    await ctx.send(totalwins)
+    await ctx.send(totalloss)
 
-
+        
+        
 @bot.command()
 async def reset(ctx, user: User):
     try:
