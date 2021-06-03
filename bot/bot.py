@@ -8,6 +8,7 @@ import os
 import re
 import pytz
 import psycopg2
+import matplotlib.pyplot as plt
 
 
 
