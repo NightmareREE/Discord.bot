@@ -9,6 +9,8 @@ import re
 import pytz
 import psycopg2
 import matplotlib.pyplot as plt
+import requests
+from json import loads
 
 
 
@@ -527,6 +529,52 @@ async def give(ctx, arg: User, money):
             await ctx.send("Nice try")
     except:
         await ctx.send(f"{ctx.message.author.mention} Wrong command idiot")
+
+########################################################################################################################
+@bot.command()
+async def twitch(ctx, arg):
+
+    API_ENDPOINT = f"https://api.twitch.tv/helix/search/channels?query={arg}&first=1"
+
+    Client_ID = "3td506yd0tekl9mgihf3xo3e629yg3"
+
+    head = {
+    "Authorization" : "Bearer vcxir5at5bmqeq5r5dfwig2mcy5tdx",
+    "Client-ID" : Client_ID
+    }
+
+    r = requests.get(url = API_ENDPOINT, headers = head)
+
+    print(r.text)
+    id = loads(r.text)['data'][0]['id']
+    profilepic= loads(r.text)['data'][0]['thumbnail_url']
+    name = loads(r.text)['data'][0]['display_name']
+    title = loads(r.text)['data'][0]['title']
+    status = loads(r.text)['data'][0]['is_live']
+    started = loads(r.text)['data'][0]['started_at']
+    game = loads(r.text)['data'][0]['game_name']
+    #2021-06-03T15:02:18Z
+    #date_time_obj = datetime.strptime(started, '%Y-%m-%d %H:%M:%S')
+    #diff = datetime.now() - date_time_obj
+
+    API_ENDPOINT=f"https://api.twitch.tv/helix/users/follows?to_id={id}"
+    r = requests.get(url = API_ENDPOINT, headers = head)
+    total = loads(r.text)['total']
+
+    embed = discord.Embed(title=name, url=f"https://www.twitch.tv/{name}", color=0x8120cf)
+    if status == True:
+        embed.set_footer(text="They are Live!")
+        embed.add_field(name=f"Currently Playing {game}", value='\u200b', inline=False)
+        embed.add_field(name=title, value='\u200b', inline=False)
+        #embed.add_field(name="Live for ", value=diff, inline=False)
+
+
+    else:
+        embed.set_footer(text="They are not Live")
+
+    embed.set_thumbnail(url=profilepic)
+    embed.add_field(name="Amount of Followers: ", value=total, inline=False)
+    await ctx.send(embed=embed)
 
 ########################################################################################################################
 @bot.command()
