@@ -2,5 +2,5 @@ discord.py
 pytz
 psycopg2
 matplotlib
-requests
+
 json
