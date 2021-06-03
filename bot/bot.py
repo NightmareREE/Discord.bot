@@ -472,7 +472,8 @@ async def stats(ctx):
 
     my_data = [totalwins, totalloss]
     my_labels = 'wins', 'losses'
-    plt.pie(my_data, labels=my_labels, autopct='%1.1f%%')
+    mycolors = ["green", "red"]
+    plt.pie(my_data, labels=my_labels, colors= mycolors, autopct='%1.1f%%')
     plt.title('Your Win Loss Ratio')
     plt.axis('equal')
     plt.savefig("image1.png")
