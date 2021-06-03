@@ -399,8 +399,8 @@ async def roulette(ctx, bet):
             newpoints = oldpoints * 2
             c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
             c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
-            c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, int(oldpoints), "won",))
             user1 = c.fetchone()
+            c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, int(oldpoints), "won",))
             await ctx.send(
                 f"{ctx.message.author.mention} Won {oldpoints} and now has {user1[6]} points! <:EZ:788447395805265990>")
     elif ch in bet:
@@ -449,6 +449,7 @@ async def roulette(ctx, bet):
     else:
         out = discord.Embed(title="You betted more points than you own", color=0xff0000)
         await ctx.send(embed=out)
+
 
 @bot.command()
 async def stats(ctx):
