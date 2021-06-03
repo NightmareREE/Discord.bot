@@ -465,16 +465,16 @@ async def stats(ctx):
     c.execute('SELECT count(*) FROM bets WHERE id=%s AND result = %s', (ctx.message.author.id,"lost",))
     user = c.fetchone()
     totalloss = user[0]
-    out = discord.Embed(title=f"{ctx.message.author.name}", color=0xff0000)
+
+    out = discord.Embed(title=f"{ctx.message.author.name}'s Wins and Losses", color=0xff0000)
     out.add_field(name="Total amount of bets: ", value=totalbets, inline=False)
     out.add_field(name="# of Won bets: ", value=totalwins, inline=False)
     out.add_field(name="# of Lost bets: ", value=totalloss, inline=False)
 
     my_data = [totalwins, totalloss]
     my_labels = 'wins', 'losses'
-    mycolors = ["green", "red"]
-    plt.pie(my_data, labels=my_labels, colors= mycolors, autopct='%1.1f%%')
-    plt.title('Your Win Loss Ratio')
+    plt.pie(my_data, labels=my_labels, autopct='%1.1f%%')
+    plt.title(f"{ctx.message.author.name}'s Win Loss Ratio")
     plt.axis('equal')
     plt.savefig("image1.png")
     image = discord.File("image1.png")
