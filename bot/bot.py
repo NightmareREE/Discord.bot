@@ -466,9 +466,9 @@ async def stats(ctx):
         user = c.fetchone()
         totalloss = user[0]
         out = discord.Embed(title=f"{ctx.message.author.name}", color=0xff0000)
-        out.add_field(name="Total amount of bets: ", value=totalbets, inline=True)
-        out.add_field(name="# of Won bets: ", value=totalwins, inline=True)
-        out.add_field(name="# of Lost bets: ", value=totalloss, inline=True)
+        out.add_field(name="Total amount of bets: ", value=totalbets, inline=False)
+        out.add_field(name="# of Won bets: ", value=totalwins, inline=False)
+        out.add_field(name="# of Lost bets: ", value=totalloss, inline=False)
         await ctx.send(embed=out)
     except:
         await ctx.send("You have made no bets")
