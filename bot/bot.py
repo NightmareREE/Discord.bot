@@ -434,13 +434,13 @@ async def roulette(ctx, bet):
         if (num == 0):
             newpoints = oldpoints - int(bet)
             c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
-            c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, int(bet), "lost",))
+            c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, bet, "lost",))
             await ctx.send(
                 f"{ctx.message.author.mention} Lost {bet} and now has {newpoints} points <:NotLikeThis:791431758024802336>")
         elif (num == 1):
             newpoints = oldpoints + int(bet)
             c.execute('UPDATE users SET points=%s WHERE id=%s', (newpoints, ctx.message.author.id))
-            c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, int(bet), "won",))
+            c.execute('INSERT INTO bets(id, name, bet, result) VALUES (%s, %s, %s, %s)',(ctx.message.author.id, ctx.message.author.name, bet, "won",))
             c.execute('SELECT * FROM users WHERE id=%s', (ctx.message.author.id,))
             user1 = c.fetchone()
             await ctx.send(
