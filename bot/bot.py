@@ -461,7 +461,7 @@ async def stats(ctx):
     c.execute('SELECT count(*) FROM bets WHERE id=%s AND result = %s', (ctx.message.author.id,"won",))
     user = c.fetchone()
     totalwins  = user[0]
-    c.execute('SELECT count(*) FROM bets WHERE id=%s AND result = $s', (ctx.message.author.id, "lost",))
+    c.execute('SELECT count(*) FROM bets WHERE id=%s AND result = %s', (ctx.message.author.id, "lost",))
     user = c.fetchone()
     totalloss  = user[0]
     await ctx.send(totalbets)
