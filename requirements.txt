@@ -3,4 +3,3 @@ pytz
 psycopg2
 matplotlib
 
-json
