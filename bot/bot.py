@@ -469,7 +469,18 @@ async def stats(ctx):
         out.add_field(name="Total amount of bets: ", value=totalbets, inline=False)
         out.add_field(name="# of Won bets: ", value=totalwins, inline=False)
         out.add_field(name="# of Lost bets: ", value=totalloss, inline=False)
+
+        my_data = [totalwins, totalloss]
+        my_labels = 'wins', 'losses'
+        plt.pie(my_data, labels=my_labels, autopct='%1.1f%%')
+        plt.title('Your Win Loss Ratio')
+        plt.axis('equal')
+        plt.savefig("image1.png")
+        image = discord.File("image1.png")
+        plt.close()
         await ctx.send(embed=out)
+        await ctx.send(file=image)
+
     except:
         await ctx.send("You have made no bets")
 
