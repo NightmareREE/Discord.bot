@@ -467,11 +467,23 @@ async def stats(ctx):
     c.execute('SELECT count(*) FROM bets WHERE id=%s AND result = %s', (ctx.message.author.id,"lost",))
     user = c.fetchone()
     totalloss = user[0]
+    c.execute('SELECT SUM(bet) FROM bets WHERE id=%s AND result = %s', (ctx.message.author.id,"won",))
+    user = c.fetchone()
+    wonpoints = user[0]
+    c.execute('SELECT SUM(bet) FROM bets WHERE id=%s AND result = %s', (ctx.message.author.id,"lost",))
+    user = c.fetchone()
+    lostpoints = user[0]
+    profit = wonpoints - lostpoints
 
     out = discord.Embed(title=f"{ctx.message.author.name}'s Wins and Losses", color=0xff0000)
     out.add_field(name="Total amount of bets: ", value=totalbets, inline=False)
     out.add_field(name="# of Won bets: ", value=totalwins, inline=False)
     out.add_field(name="# of Lost bets: ", value=totalloss, inline=False)
+    out.add_field(name="Total Lost Points: ", value=lostpoints, inline=False)
+    out.add_field(name="Total Won Points: ", value=wonpoints, inline=False)
+    out.add_field(name="Profit: ", value=profit, inline=False)
+
+
 
     my_data = [totalwins, totalloss]
     my_labels = 'wins', 'losses'
