@@ -473,6 +473,13 @@ async def stats(ctx):
     c.execute('SELECT SUM(bet) FROM bets WHERE id=%s AND result = %s', (ctx.message.author.id,"lost",))
     user = c.fetchone()
     lostpoints = user[0]
+    
+    
+    if wonpoints is None:
+        wonpoints = 0
+    if lostpoints is None:
+        lostpoints = 0
+    
     profit = wonpoints - lostpoints
 
     out = discord.Embed(title=f"{ctx.message.author.name}'s Wins and Losses", color=0xff0000)
