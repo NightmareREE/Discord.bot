@@ -3,3 +3,5 @@ pytz
 psycopg2
 matplotlib
 requests==2.25.1
+dismusic
+discord-custom-help
